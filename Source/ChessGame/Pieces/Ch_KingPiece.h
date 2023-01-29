@@ -28,5 +28,8 @@ protected:
 
 public:
 protected:
+
+	TArray<FIntVector2> m_KingMoves{{0,1},{1,0},{0,-1},{-1,0},{1,1},{-1,-1},{-1, 1},{1,-1}};
+
 private:
 };

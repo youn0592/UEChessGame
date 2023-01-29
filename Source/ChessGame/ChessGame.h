@@ -4,3 +4,9 @@
 
 #include "CoreMinimal.h"
 
+UENUM()
+enum EPieceTeam
+{
+    White,
+    Black
+};

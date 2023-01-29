@@ -29,6 +29,9 @@ protected:
 
 public:
 protected:
+
+	TArray<FIntVector2> m_KnightMoves{{2,1}, {2,-1}, {1,2},{1,-2}, {-1,2},{-1,-2},{-2,1},{-2,-1}};
+
 private:
 	
 };

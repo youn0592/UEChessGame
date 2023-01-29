@@ -22,8 +22,8 @@ void ACh_RookPiece::Tick(float DeltaTime)
 
 void ACh_RookPiece::CalculateMove()
 {
-    int nextIndex = 1;
-    int nextAltIndex = 0;
+    int nextXIndex = 1;
+    int nextYIndex = 0;
     int loopIndex = m_boardSizeX * 2;
 
     int newX, newY;
@@ -35,8 +35,8 @@ void ACh_RookPiece::CalculateMove()
 
     for (int i = 0; i < loopIndex; i++)
     {
-        newX += nextIndex;
-        newY += nextAltIndex;
+        newX += nextXIndex;
+        newY += nextYIndex;
 
         if (m_gameBoard->GetCellAtIndex(newX, newY) && IsCellEmpty(newX, newY))
         {
@@ -48,7 +48,7 @@ void ACh_RookPiece::CalculateMove()
         if (bIsPositve)
         {
             newX = m_xIndex;
-            nextIndex = -1;
+            nextXIndex = -1;
             bIsPositve = false;
             continue;
         }
@@ -56,15 +56,15 @@ void ACh_RookPiece::CalculateMove()
         {
             newX = m_xIndex;
             newY = m_yIndex;
-            nextIndex = 0;
-            nextAltIndex = 1;
+            nextXIndex = 0;
+            nextYIndex = 1;
             bIsAltPositive = false;
             continue;
         }
         if (!bIsAltPositive)
         {
             newY = m_yIndex;
-            nextAltIndex = -1;
+            nextYIndex = -1;
             continue;
         }
         break;

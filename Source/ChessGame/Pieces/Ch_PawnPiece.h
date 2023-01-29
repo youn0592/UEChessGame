@@ -22,6 +22,8 @@ public:
 
     virtual void Tick(float DeltaTime) override;
 
+    virtual void SetTeam(EPieceTeam team) override;
+
 protected:
 
     virtual void BeginPlay() override;
@@ -29,12 +31,13 @@ protected:
     virtual void CalculateMove() override;
     virtual void MovePiece(AChessBoardCell* selectedCell);
 
+
 public:
 
 protected:
 
     bool bFirstMove;
-
+    int m_Direction;
 
 private:
 

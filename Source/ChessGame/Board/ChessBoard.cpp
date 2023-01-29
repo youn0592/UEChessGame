@@ -50,23 +50,19 @@ void AChessBoard::CreateBoard()
             }
 
             ChessGrid[x][y] = tempActor;
-            if (x == 0)
+            if (x == 0 || x == 7)
             {
-                SpawnPieces(tempActor, y);
+                SpawnPieces(tempActor, x, y);
             }
-            if (x == 1)
+            if (x == 1 || x == 6)
             {
-                SpawnPawns(tempActor);
-            }
-            if (x == 4 && y == 3)
-            {
-                SpawnPawns(tempActor);
+                SpawnPawns(tempActor, x);
             }
         }
     }
 }
 
-void AChessBoard::SpawnPawns(AChessBoardCell* cell)
+void AChessBoard::SpawnPawns(AChessBoardCell* cell, int xIndex)
 {
     FActorSpawnParameters Parms;
     FVector SpawnLocation = cell->GetMiddleOfCell();
@@ -76,15 +72,33 @@ void AChessBoard::SpawnPawns(AChessBoardCell* cell)
     cell->SetChessPieceOnCell(tempPiece);
     tempPiece->SetCurrentCell(cell);
 
+   
+
     AChessGameStateBase* State;
     State = Cast<AChessGameStateBase>(GetWorld()->GetGameState());
-    State->AliveWhiteTeam.Add(tempPiece);
+ 
+
+    switch (xIndex)
+    {
+    case 1:
+        tempPiece->SetTeam(EPieceTeam::White);    
+        State->AliveWhiteTeam.Add(tempPiece);
+        break;
+    case 6:
+        tempPiece->SetTeam(EPieceTeam::Black);
+        State->AliveBlackTeam.Add(tempPiece);
+        break;
+    default:
+        tempPiece->SetTeam(EPieceTeam::White);
+        State->AliveWhiteTeam.Add(tempPiece);
+        break;
+    }
 }
 
-void AChessBoard::SpawnPieces(AChessBoardCell* cell, int index)
+void AChessBoard::SpawnPieces(AChessBoardCell* cell, int xIndex, int typeIndex)
 {
     int spawnIndex;
-    switch (index)
+    switch (typeIndex)
     {
     case 0:
         spawnIndex = 1;
@@ -125,7 +139,22 @@ void AChessBoard::SpawnPieces(AChessBoardCell* cell, int index)
 
     AChessGameStateBase* State;
     State = Cast<AChessGameStateBase>(GetWorld()->GetGameState());
-    State->AliveWhiteTeam.Add(tempPiece);
+  
+    switch (xIndex)
+    {
+    case 0:
+        tempPiece->SetTeam(EPieceTeam::White);    
+        State->AliveWhiteTeam.Add(tempPiece);  
+        break;
+    case 7:
+        tempPiece->SetTeam(EPieceTeam::Black);
+        State->AliveBlackTeam.Add(tempPiece);
+        break;
+    default:
+        tempPiece->SetTeam(EPieceTeam::White);
+        State->AliveWhiteTeam.Add(tempPiece);
+        break;
+    }
 }
 
 // Called every frame

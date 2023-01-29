@@ -21,6 +21,22 @@ void ACh_PawnPiece::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
+void ACh_PawnPiece::SetTeam(EPieceTeam team)
+{
+    Super::SetTeam(team);
+
+    switch (team)
+    {
+    case EPieceTeam::White:
+        m_Direction = 1;
+        break;
+        
+    case EPieceTeam::Black:
+        m_Direction = -1;
+        break;
+    }
+}
+
 void ACh_PawnPiece::MovePiece(AChessBoardCell* selectedCell)
 {
     Super::MovePiece(selectedCell);
@@ -36,7 +52,7 @@ void ACh_PawnPiece::CalculateMove()
 
     for (int i = 0; i < loopIndex; i++)
     {
-        newX++;
+        newX += m_Direction;
 
         if (m_gameBoard->GetCellAtIndex(newX, m_yIndex) && IsCellEmpty(newX, m_yIndex))
         {

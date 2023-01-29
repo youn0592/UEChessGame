@@ -13,12 +13,28 @@ AChessPiece::AChessPiece()
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
 
+    m_RootComponent = CreateDefaultSubobject<USceneComponent>("RootComponent");
+    RootComponent = m_RootComponent;
+
     m_ChessPieceMesh = CreateDefaultSubobject<UStaticMeshComponent>("PieceMesh");
-    RootComponent = m_ChessPieceMesh;
+    m_ChessPieceMesh->SetupAttachment(RootComponent);
 
     m_BoxCollision = CreateDefaultSubobject<UBoxComponent>("PieceCollision");
+    m_BoxCollision->SetupAttachment(RootComponent);
 
     Tags.Add("ChessPiece");
+}
+
+void AChessPiece::SetTeam(EPieceTeam team)
+{
+    if (!m_PieceMaterials[team])
+    {
+        UE_LOG(LogTemp, Error, TEXT("Materials was nullptr in ChessPiece"));
+    }
+
+    CurrentTeam = team;
+    m_ChessPieceMesh->SetMaterial(0, m_PieceMaterials[team]);
+    return;
 }
 
 void AChessPiece::BeginPlay()
@@ -43,7 +59,7 @@ void AChessPiece::BeginPlay()
 
     m_gameBoard->GetBoardSize(m_boardSizeX, m_boardSizeY);
 
-    m_BoxCollision->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+    //m_BoxCollision->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 }
 
 // Called every frame

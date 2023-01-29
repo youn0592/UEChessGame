@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "../ChessGame.h"
 #include "ChessBoard.generated.h"
 
 class AChessPiece;
@@ -34,10 +35,10 @@ protected:
 	UFUNCTION()
 	void CreateBoard();
 	UFUNCTION()
-	void SpawnPawns(AChessBoardCell* cell);
+	void SpawnPawns(AChessBoardCell* cell, int xIndex);
 
 	UFUNCTION()
-	void SpawnPieces(AChessBoardCell* cell, int index);
+	void SpawnPieces(AChessBoardCell* cell, int xIndex, int yIndex);
 
 public:	
 
@@ -46,8 +47,6 @@ protected:
 	static const int boardY = 8;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Parameters")
 	int cellSpace = 50;
-	//int SpawnLocX = 0;
-	//int SpawnLocY = 0;
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	TSubclassOf<AActor> CellToSpawn;

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "../ChessGame.h"
 #include "GameFramework/Actor.h"
 #include "ChessPiece.generated.h"
 
@@ -21,6 +22,8 @@ public:
 
     // Sets default values for this actor's properties
     AChessPiece();
+
+    virtual void SetTeam(EPieceTeam team);
 
     virtual void PieceSelected();
     virtual void PieceUnselected();
@@ -49,16 +52,23 @@ public:
 protected:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+        USceneComponent* m_RootComponent;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
         UMeshComponent* m_ChessPieceMesh;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
         UBoxComponent* m_BoxCollision;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
+        TArray<UMaterial*> m_PieceMaterials;
 
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Properties")
         float MovementSpeed = 5.0f;
 
     bool bIsSelected, bMovePiece;
     FVector newLocation;
+    EPieceTeam CurrentTeam;
 
     AChessBoardCell* m_CurrentCell;
     TArray<AChessBoardCell*> m_moveableCells;
