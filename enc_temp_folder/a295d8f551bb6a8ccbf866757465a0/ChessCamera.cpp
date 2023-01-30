@@ -78,14 +78,6 @@ void AChessCamera::LeftClickTriggered(FVector MousePos)
                 LastSelectedPiece = HitPiece;
                 HitPiece->PieceSelected();
             }
-            else
-            {
-                if (LastSelectedPiece)
-                {
-                    AChessBoardCell* newCell = HitPiece->GetCurrentCell();
-                    LastSelectedPiece->CheckSelectedCell(newCell);
-                }
-            }
         }
 
         if (hit.GetActor()->ActorHasTag("BoardCell"))

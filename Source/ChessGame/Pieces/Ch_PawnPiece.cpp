@@ -30,7 +30,7 @@ void ACh_PawnPiece::SetTeam(EPieceTeam team)
     case EPieceTeam::White:
         m_Direction = 1;
         break;
-        
+
     case EPieceTeam::Black:
         m_Direction = -1;
         break;
@@ -62,6 +62,40 @@ void ACh_PawnPiece::CalculateMove()
             continue;
         }
         break;
+    }
+
+    CalculateKill();
+}
+
+void ACh_PawnPiece::CalculateKill()
+{
+    AChessBoardCell* NewCell;
+    int newX, newY;
+    int nextIndex = 1;
+    newX = m_xIndex;
+    newY = m_yIndex;
+
+
+    for (int i = 0; i < 2; i++)
+    {
+        newX += m_Direction;
+        newY += nextIndex;
+
+        if (m_gameBoard->GetCellAtIndex(newX, newY) && !IsCellEmpty(newX, newY))
+        {
+            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
+
+            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
+            {
+                NewCell->SetSelectedMaterial(2);
+                m_moveableCells.Add(NewCell);
+            }
+
+        }
+
+        newX = m_xIndex;
+        newY = m_yIndex;
+        nextIndex *= -1;
     }
 }
 

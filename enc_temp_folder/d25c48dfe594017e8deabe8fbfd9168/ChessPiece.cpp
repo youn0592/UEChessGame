@@ -52,15 +52,9 @@ void AChessPiece::BeginPlay()
 void AChessPiece::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-
-    if (bMovePiece)
-    {    
-        LastFramePos = GetActorLocation();
+    if (bMovePiece && m_Gamemode->GetCurrentTeam() == m_CurrentTeam)
+    {
         SetActorLocation(FMath::Lerp(GetActorLocation(), newLocation, MovementSpeed * DeltaTime));
-        if (LastFramePos == GetActorLocation())
-        {
-            bMovePiece = false;
-        }
     }
 }
 
@@ -100,7 +94,6 @@ void AChessPiece::CalculateMove()
 
 void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
 {
-    if (m_Gamemode->GetCurrentTeam() != m_CurrentTeam) { return; }
     bMovePiece = true;
     newLocation = selectedCell->GetMiddleOfCell();
 
@@ -191,7 +184,6 @@ void AChessPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
             if (selectedCell->GetChessPieceOnCell() != nullptr)
             {
                 //Will Change
-                selectedCell->GetChessPieceOnCell()->KillMovement();
                 selectedCell->GetChessPieceOnCell()->SetActorLocation(FVector(500, 500, 0));
                 selectedCell->GetChessPieceOnCell()->SetCurrentCell(nullptr);
                 selectedCell->SetChessPieceOnCell(nullptr);
@@ -199,11 +191,6 @@ void AChessPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
             MovePiece(selectedCell);
         }
     }
-}
-
-void AChessPiece::KillMovement()
-{
-    bMovePiece = false;
 }
 
 

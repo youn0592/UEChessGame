@@ -36,8 +36,6 @@ public:
     virtual void CheckKillCell(AChessBoardCell* selectedCell);
     virtual void CheckSelectedCell(AChessBoardCell* selectedCell);
 
-    virtual void KillMovement();
-
     // Called every frame
     virtual void Tick(float DeltaTime) override;
 
@@ -86,8 +84,6 @@ protected:
     int m_boardSizeX, m_boardSizeY;
     int m_xIndex, m_yIndex;
     int m_Distance;
-
-    FVector LastFramePos;
 
 private:
 

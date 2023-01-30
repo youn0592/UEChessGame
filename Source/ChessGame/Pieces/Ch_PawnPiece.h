@@ -29,6 +29,7 @@ protected:
     virtual void BeginPlay() override;
 
     virtual void CalculateMove() override;
+    void CalculateKill();
     virtual void MovePiece(AChessBoardCell* selectedCell);
 
 

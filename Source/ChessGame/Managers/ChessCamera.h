@@ -7,6 +7,7 @@
 #include "ChessCamera.generated.h"
 
 class AChessPiece;
+class AChessGameModeBase;
 
 UCLASS()
 class CHESSGAME_API AChessCamera : public APawn
@@ -45,5 +46,6 @@ private:
 
 	APlayerController* playerController;
 	AChessPiece* LastSelectedPiece;
+	AChessGameModeBase* m_Gamemode;
 
 };

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "../ChessGame.h"
 #include "GameFramework/GameModeBase.h"
 #include "ChessGameModeBase.generated.h"
 
@@ -23,6 +24,10 @@ public:
 
 	void SetChessBoard(AChessBoard* newBoard);
 	AChessBoard* GetChessBoard();
+
+	void SetCurrentTeam(EPieceTeam team);
+	EPieceTeam GetCurrentTeam();
+
 	
 protected:
 
@@ -33,6 +38,7 @@ public:
 protected:
 
 	AChessBoard* m_ChessBoard;
+	EPieceTeam m_CurrentTeam;
 
 private:
 
