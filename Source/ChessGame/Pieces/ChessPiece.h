@@ -33,7 +33,6 @@ public:
     virtual void SetCurrentCell(AChessBoardCell* newCell);
     virtual AChessBoardCell* GetCurrentCell();
     
-    virtual void CheckKillCell(AChessBoardCell* selectedCell);
     virtual void CheckSelectedCell(AChessBoardCell* selectedCell);
 
     virtual void KillMovement();
@@ -53,6 +52,7 @@ protected:
 
 public:
 
+    bool bIsAlive;
 
 protected:
 
@@ -86,6 +86,7 @@ protected:
     int m_boardSizeX, m_boardSizeY;
     int m_xIndex, m_yIndex;
     int m_Distance;
+    int m_teamDir;
 
     FVector LastFramePos;
 

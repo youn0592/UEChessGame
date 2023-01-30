@@ -35,6 +35,16 @@ void ACh_KingPiece::CalculateMove()
             NewCell->SetSelectedMaterial(1);
             m_moveableCells.Add(NewCell);
         }
+        else if (m_gameBoard->GetCellAtIndex(newX, newY) && !IsCellEmpty(newX, newY))
+        {
+            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
+            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
+            {
+                NewCell->SetSelectedMaterial(2);
+                m_moveableCells.Add(NewCell);
+            }
+        }
+
     }
 
 }

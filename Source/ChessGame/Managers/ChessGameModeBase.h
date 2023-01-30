@@ -8,7 +8,7 @@
 #include "ChessGameModeBase.generated.h"
 
 /**
- * 
+ *
  */
 
 class AChessBoard;
@@ -16,29 +16,37 @@ class AChessBoard;
 UCLASS()
 class CHESSGAME_API AChessGameModeBase : public AGameModeBase
 {
-	GENERATED_BODY()
-	
-public:
-
-	AChessGameModeBase();
-
-	void SetChessBoard(AChessBoard* newBoard);
-	AChessBoard* GetChessBoard();
-
-	void SetCurrentTeam(EPieceTeam team);
-	EPieceTeam GetCurrentTeam();
-
-	
-protected:
-
-	virtual void BeginPlay() override;
+    GENERATED_BODY()
 
 public:
 
+    AChessGameModeBase();
+
+    void SetChessBoard(AChessBoard* newBoard);
+    AChessBoard* GetChessBoard();
+
+    void SetCurrentTeam(EPieceTeam team);
+    EPieceTeam GetCurrentTeam();
+
+    void SetDeadPieceLocation(EPieceTeam team, FVector nextLoc);
+    FVector GetDeadPieceLocation(EPieceTeam team);
+
+
 protected:
 
-	AChessBoard* m_ChessBoard;
-	EPieceTeam m_CurrentTeam;
+    virtual void BeginPlay() override;
+
+public:
+
+
+
+protected:
+
+    AChessBoard* m_ChessBoard;
+    EPieceTeam m_CurrentTeam;
+
+    FVector m_blackDeadPieceLoc;
+    FVector m_whiteDeadPieceLoc;
 
 private:
 

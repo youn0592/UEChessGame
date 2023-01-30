@@ -12,8 +12,8 @@ AChessGameModeBase::AChessGameModeBase()
 void AChessGameModeBase::BeginPlay()
 {
     Super::BeginPlay();
-    m_whiteDeadPieceLoc = FVector(50, -45, 0);
-    m_blackDeadPieceLoc = FVector(300, 395, 0);
+    m_whiteDeadPieceLoc = FVector(50, -70, 0);
+    m_blackDeadPieceLoc = FVector(300, 420, 0);
     m_CurrentTeam = EPieceTeam::White;
 
 }

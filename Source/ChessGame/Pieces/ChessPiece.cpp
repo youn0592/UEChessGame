@@ -25,7 +25,6 @@ AChessPiece::AChessPiece()
     Tags.Add("ChessPiece");
 }
 
-
 void AChessPiece::BeginPlay()
 {
     Super::BeginPlay();
@@ -46,6 +45,7 @@ void AChessPiece::BeginPlay()
     }
 
     m_gameBoard->GetBoardSize(m_boardSizeX, m_boardSizeY);
+    bIsAlive = true;
 }
 
 // Called every frame
@@ -76,9 +76,12 @@ void AChessPiece::SetTeam(EPieceTeam team)
     case EPieceTeam::White:
         m_CurrentTeam = team;
         m_OppositeTeam = EPieceTeam::Black;
+        m_teamDir = 1;
         break;
     case EPieceTeam::Black:
         m_CurrentTeam = team;
+        m_ChessPieceMesh->AddRelativeRotation(FRotator(0, 180, 0));
+        m_teamDir = -1;
         m_OppositeTeam = EPieceTeam::White;
         break;
     default:
@@ -125,6 +128,7 @@ void AChessPiece::PieceSelected()
     {
         return;
     }
+    if (!bIsAlive) { return; }
     bIsSelected = true;
     CalculateMove();
 }
@@ -157,26 +161,6 @@ AChessBoardCell* AChessPiece::GetCurrentCell()
     return m_CurrentCell;
 }
 
-void AChessPiece::CheckKillCell(AChessBoardCell* selectedCell)
-{
-    if (m_moveableCells.Num() == 0) { return; }
-
-    int SCX, SCY;
-    selectedCell->GetIndex(SCX, SCY);
-
-    for (int i = 0; i < m_moveableCells.Num(); i++)
-    {
-        if (selectedCell == m_moveableCells[i] && selectedCell->GetChessPieceOnCell() != nullptr)
-        {
-            //Will Change
-            selectedCell->GetChessPieceOnCell()->SetActorLocation(FVector(500, 500, 0));
-            selectedCell->SetChessPieceOnCell(nullptr);
-            MovePiece(selectedCell);
-        }
-    }
-
-}
-
 void AChessPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
 {
     if (m_moveableCells.Num() == 0) { return; }
@@ -191,10 +175,14 @@ void AChessPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
             if (selectedCell->GetChessPieceOnCell() != nullptr)
             {
                 //Will Change
+                FVector loc = m_Gamemode->GetDeadPieceLocation(m_CurrentTeam);
                 selectedCell->GetChessPieceOnCell()->KillMovement();
-                selectedCell->GetChessPieceOnCell()->SetActorLocation(FVector(500, 500, 0));
+                selectedCell->GetChessPieceOnCell()->SetActorLocation(loc);
+                selectedCell->GetChessPieceOnCell()->bIsAlive = false;
                 selectedCell->GetChessPieceOnCell()->SetCurrentCell(nullptr);
                 selectedCell->SetChessPieceOnCell(nullptr);
+                loc.X += 25 * m_teamDir;
+                m_Gamemode->SetDeadPieceLocation(m_CurrentTeam, loc);
             }
             MovePiece(selectedCell);
         }

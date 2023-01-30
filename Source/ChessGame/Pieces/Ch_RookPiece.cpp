@@ -45,6 +45,16 @@ void ACh_RookPiece::CalculateMove()
             m_moveableCells.Add(NewCell);
             continue;
         }
+        else if (m_gameBoard->GetCellAtIndex(newX, newY) && !IsCellEmpty(newX, newY))
+        {
+            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
+            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
+            {
+                NewCell->SetSelectedMaterial(2);
+                m_moveableCells.Add(NewCell);
+            }
+        }
+
         if (bIsPositve)
         {
             newX = m_xIndex;
