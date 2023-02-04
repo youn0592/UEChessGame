@@ -25,11 +25,7 @@ protected:
 
 public:
 
-	TArray<AChessPiece*> AliveWhiteTeam;
-	TArray<AChessPiece*> DeadWhiteTeam;
 
-	TArray<AChessPiece*> AliveBlackTeam;
-	TArray<AChessPiece*> DeadBlackTeam;
 
 protected:
 

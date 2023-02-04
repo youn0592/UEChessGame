@@ -10,3 +10,15 @@ enum EPieceTeam
     White,
     Black
 };
+
+UENUM()
+enum EPieceType
+{
+    Default = -1,
+    Pawn,
+    Rook,
+    Bishop,
+    Knight,
+    Queen,
+    King
+};

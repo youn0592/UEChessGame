@@ -32,7 +32,7 @@ void AChessPiece::BeginPlay()
     m_Gamemode = Cast<AChessGameModeBase>(GetWorld()->GetAuthGameMode());
     if (m_Gamemode == nullptr)
     {
-        UE_LOG(LogTemp, Error, TEXT("Gamemode was null in PawnPiece"));
+        UE_LOG(LogTemp, Error, TEXT("Gamemode was null in a %s"), *GetName());
         return;
     }
 
@@ -40,7 +40,7 @@ void AChessPiece::BeginPlay()
 
     if (m_gameBoard == nullptr)
     {
-        UE_LOG(LogTemp, Error, TEXT("m_gameBoard was null in PawnPiece"));
+        UE_LOG(LogTemp, Error, TEXT("Gameboard was null in a %s"), *GetName());
         return;
     }
 
@@ -54,12 +54,23 @@ void AChessPiece::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 
     if (bMovePiece)
-    {    
-        LastFramePos = GetActorLocation();
-        SetActorLocation(FMath::Lerp(GetActorLocation(), newLocation, MovementSpeed * DeltaTime));
-        if (LastFramePos == GetActorLocation())
+    {
+        if (m_Distance == 0)
+        {
+            m_Distance = 1;
+            movePercent = 1;
+        }
+        movePercent += DeltaTime * MovementSpeed / m_Distance;
+        movePercent = FMath::Clamp(movePercent, 0, 1);
+
+        float z = FMath::Lerp(0.0f, 10.0f, 4 * (movePercent - movePercent * movePercent));
+       
+        SetActorLocation(FMath::Lerp(StartPos, newLocation, (1 + FMath::Cos(PI * (movePercent + 1))) / 2) + FVector::UpVector * z);
+
+        if (movePercent >= 1)
         {
             bMovePiece = false;
+            movePercent = 0;
         }
     }
 }
@@ -97,8 +108,14 @@ EPieceTeam AChessPiece::GetTeam()
     return m_CurrentTeam;
 }
 
-void AChessPiece::CalculateMove()
+EPieceType AChessPiece::GetPieceType()
 {
+    if (m_PieceType == -1)
+    {
+        UE_LOG(LogTemp, Error, TEXT("m_PieceType was null at %s"), *GetName());
+    }
+
+    return m_PieceType;
 }
 
 void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
@@ -106,6 +123,9 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
     if (m_Gamemode->GetCurrentTeam() != m_CurrentTeam) { return; }
     bMovePiece = true;
     newLocation = selectedCell->GetMiddleOfCell();
+    StartPos = GetActorLocation();
+    m_Distance = FVector::Distance(StartPos, newLocation);
+    m_Distance = (m_Distance / 1000 + 1) * 0.5f;
 
     m_CurrentCell->SetChessPieceOnCell(nullptr);
     m_CurrentCell = selectedCell;
@@ -115,6 +135,7 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
 
     m_Gamemode->SetCurrentTeam(m_CurrentTeam);
     PieceUnselected();
+    CheckForCheck();
 }
 
 bool AChessPiece::IsCellEmpty(int xIndex, int yIndex)
@@ -129,6 +150,7 @@ void AChessPiece::PieceSelected()
         return;
     }
     if (!bIsAlive) { return; }
+
     bIsSelected = true;
     CalculateMove();
 }
@@ -137,9 +159,9 @@ void AChessPiece::PieceUnselected()
 {
     if (m_moveableCells.Num() == 0) { return; }
 
-    for (int i = 0; i < m_moveableCells.Num(); i++)
+    for (auto moveableCell : m_moveableCells)
     {
-        m_moveableCells[i]->SetSelectedMaterial(0);
+        moveableCell->SetSelectedMaterial(0);
     }
 
     m_moveableCells.Empty();
@@ -168,23 +190,36 @@ void AChessPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
     int SCX, SCY;
     selectedCell->GetIndex(SCX, SCY);
 
-    for (int i = 0; i < m_moveableCells.Num(); i++)
+    for (auto moveableCell : m_moveableCells)
     {
-        if (selectedCell == m_moveableCells[i])
+        if (selectedCell == moveableCell)
         {
+            if (m_Gamemode->GetTeamInCheck(m_CurrentTeam) && IsCellEmpty(SCX, SCY))
+            {
+                selectedCell->SetChessPieceOnCell(this);
+                if (m_Gamemode->IsKingStillInCheck(m_CurrentTeam, selectedCell, m_PieceType))
+                {
+                    selectedCell->SetChessPieceOnCell(nullptr);
+                    break;
+                }
+                selectedCell->SetChessPieceOnCell(nullptr);
+            }
             if (selectedCell->GetChessPieceOnCell() != nullptr)
             {
-                //Will Change
                 FVector loc = m_Gamemode->GetDeadPieceLocation(m_CurrentTeam);
-                selectedCell->GetChessPieceOnCell()->KillMovement();
-                selectedCell->GetChessPieceOnCell()->SetActorLocation(loc);
-                selectedCell->GetChessPieceOnCell()->bIsAlive = false;
-                selectedCell->GetChessPieceOnCell()->SetCurrentCell(nullptr);
+                AChessPiece* killingPiece = selectedCell->GetChessPieceOnCell();
+                if (killingPiece == nullptr) { return; }
+                killingPiece->KillMovement();
+                killingPiece->SetActorLocation(loc);
+                killingPiece->bIsAlive = false;
+                killingPiece->SetCurrentCell(nullptr);
                 selectedCell->SetChessPieceOnCell(nullptr);
-                loc.X += 25 * m_teamDir;
+                loc.X += 30 * m_teamDir;
+                m_Gamemode->RemovePieceFromTeam(m_OppositeTeam, killingPiece);
                 m_Gamemode->SetDeadPieceLocation(m_CurrentTeam, loc);
             }
             MovePiece(selectedCell);
+            break;
         }
     }
 }

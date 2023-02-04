@@ -25,6 +25,7 @@ public:
 
     void SetChessPieceOnCell(class AChessPiece* ChessPiece);
     AChessPiece* GetChessPieceOnCell();
+    bool IsKingOnCell();
 
     FVector GetMiddleOfCell();
 

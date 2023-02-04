@@ -20,16 +20,23 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	void AddCheckingPiece(AChessPiece* checkingPiece);
+	TArray<AChessPiece*> GetCheckingPieces();
+
 protected:
 
 	virtual void BeginPlay() override;
-
 	virtual void CalculateMove() override;
 
 public:
+
+	bool bInCheck = false;
+
 protected:
 
 	TArray<FIntVector2> m_KingMoves{{0,1},{1,0},{0,-1},{-1,0},{1,1},{-1,-1},{-1, 1},{1,-1}};
+	
+	TArray<AChessPiece*> m_CheckedPieces;
 
 private:
 };

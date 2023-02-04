@@ -3,10 +3,12 @@
 
 #include "../Pieces/Ch_PawnPiece.h"
 #include "../Board/ChessBoard.h"
+#include "../Managers/ChessGameModeBase.h"
 #include "../Board/ChessBoardCell.h"
 
 ACh_PawnPiece::ACh_PawnPiece()
 {
+    m_PieceType = EPieceType::Pawn;
 }
 
 void ACh_PawnPiece::BeginPlay()
@@ -34,6 +36,43 @@ void ACh_PawnPiece::SetTeam(EPieceTeam team)
     case EPieceTeam::Black:
         m_Direction = -1;
         break;
+    }
+}
+
+TArray<AChessBoardCell*> ACh_PawnPiece::CheckNextMove()
+{
+    CheckForCheck();
+    return m_moveableCells;
+}
+
+void ACh_PawnPiece::CheckForCheck()
+{
+    m_moveableCells.Empty();
+    AChessBoardCell* NewCell;
+    int newX, newY;
+    int nextIndex = 1;
+    newX = m_xIndex;
+    newY = m_yIndex;
+
+    for (int i = 0; i < 2; i++)
+    {
+        newX += m_Direction;
+        newY += nextIndex;
+
+        if (m_gameBoard->GetCellAtIndex(newX, newY) && !IsCellEmpty(newX, newY))
+        {
+            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
+            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam && NewCell->IsKingOnCell())
+            {
+                m_moveableCells.Add(NewCell);
+                m_Gamemode->KingInCheck(m_OppositeTeam);
+            }
+
+        }
+
+        newX = m_xIndex;
+        newY = m_yIndex;
+        nextIndex *= -1;
     }
 }
 

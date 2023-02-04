@@ -21,8 +21,10 @@ public:
     ACh_PawnPiece();
 
     virtual void Tick(float DeltaTime) override;
-
     virtual void SetTeam(EPieceTeam team) override;
+
+    virtual TArray<AChessBoardCell*> CheckNextMove() override;
+    virtual void CheckForCheck() override;
 
 protected:
 

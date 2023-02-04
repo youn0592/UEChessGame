@@ -21,6 +21,9 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	virtual TArray<AChessBoardCell*> CheckNextMove() override;
+	virtual void CheckForCheck() override;
+
 protected:
 
 	virtual void BeginPlay() override;

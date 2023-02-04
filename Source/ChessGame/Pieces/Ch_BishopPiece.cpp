@@ -3,15 +3,87 @@
 
 #include "../Pieces/Ch_BishopPiece.h"
 #include "../Board/ChessBoard.h"
+#include "../Managers/ChessGameModeBase.h"
 #include "../Board/ChessBoardCell.h"
 
 ACh_BishopPiece::ACh_BishopPiece()
 {
+    m_PieceType = EPieceType::Bishop;
 }
 
 void ACh_BishopPiece::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+}
+
+TArray<AChessBoardCell*> ACh_BishopPiece::CheckNextMove()
+{
+    CheckForCheck();
+    return m_moveableCells;
+}
+
+void ACh_BishopPiece::CheckForCheck()
+{
+    m_moveableCells.Empty();
+
+    int newX, newY;
+    newX = m_xIndex;
+    newY = m_yIndex;
+    int nextIndex = 1;
+    int nextAltIndex = -1;
+    int loopIndex = m_boardSizeX * 2;
+
+    bool bIsPositive = true;
+    bool bIsAltPostive = true;
+    AChessBoardCell* NewCell;
+
+    for (int i = 0; i < loopIndex; i++)
+    {
+        newX += nextIndex;
+        newY -= nextAltIndex;
+        if (m_gameBoard->GetCellAtIndex(newX, newY) && IsCellEmpty(newX, newY))
+        {
+            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
+            m_moveableCells.Add(NewCell);
+            continue;
+        }
+        else if (m_gameBoard->GetCellAtIndex(newX, newY) && !IsCellEmpty(newX, newY))
+        {
+            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
+            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam && NewCell->IsKingOnCell())
+            {
+                m_Gamemode->KingInCheck(m_OppositeTeam);
+                m_moveableCells.Add(NewCell);
+            }
+        }
+
+        if (bIsPositive)
+        {
+            newX = m_xIndex;
+            newY = m_yIndex;
+            nextIndex *= -1;
+            nextAltIndex *= -1;
+            bIsPositive = false;
+            continue;
+        }
+        if (bIsAltPostive)
+        {
+            newX = m_xIndex;
+            newY = m_yIndex;
+            nextAltIndex *= -1;
+            bIsAltPostive = false;
+            continue;
+        }
+        if (!bIsAltPostive)
+        {
+            newX = m_xIndex;
+            newY = m_yIndex;
+            nextIndex *= -1;
+            nextAltIndex *= -1;
+            continue;
+        }
+        break;
+    }
 }
 
 void ACh_BishopPiece::BeginPlay()

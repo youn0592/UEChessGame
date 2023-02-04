@@ -6,6 +6,7 @@
 #include "../Managers/ChessGameStateBase.h"
 #include "../Managers/ChessGameModeBase.h"
 #include "../Pieces/ChessPiece.h"
+#include "../Pieces/Ch_KingPiece.h"
 
 // Sets default values
 AChessBoard::AChessBoard()
@@ -23,7 +24,6 @@ void AChessBoard::BeginPlay()
     AChessGameModeBase* GM = Cast<AChessGameModeBase>(GetWorld()->GetAuthGameMode());
     if (GM)
     {
-        UE_LOG(LogTemp, Warning, TEXT("GM Wasn't Null in Board"));
         GM->SetChessBoard(this);
     }
 
@@ -74,23 +74,23 @@ void AChessBoard::SpawnPawns(AChessBoardCell* cell, int xIndex)
 
    
 
-    AChessGameStateBase* State;
-    State = Cast<AChessGameStateBase>(GetWorld()->GetGameState());
+    AChessGameModeBase* GM;
+    GM = Cast<AChessGameModeBase>(GetWorld()->GetAuthGameMode());
  
 
     switch (xIndex)
     {
     case 1:
         tempPiece->SetTeam(EPieceTeam::White);    
-        State->AliveWhiteTeam.Add(tempPiece);
+        GM->AliveWhiteTeam.Add(tempPiece);
         break;
     case 6:
         tempPiece->SetTeam(EPieceTeam::Black);
-        State->AliveBlackTeam.Add(tempPiece);
+        GM->AliveBlackTeam.Add(tempPiece);
         break;
     default:
         tempPiece->SetTeam(EPieceTeam::White);
-        State->AliveWhiteTeam.Add(tempPiece);
+        GM->AliveWhiteTeam.Add(tempPiece);
         break;
     }
 }
@@ -137,22 +137,30 @@ void AChessBoard::SpawnPieces(AChessBoardCell* cell, int xIndex, int typeIndex)
     cell->SetChessPieceOnCell(tempPiece);
     tempPiece->SetCurrentCell(cell);
 
-    AChessGameStateBase* State;
-    State = Cast<AChessGameStateBase>(GetWorld()->GetGameState());
+    AChessGameModeBase* GM;
+    GM = Cast<AChessGameModeBase>(GetWorld()->GetAuthGameMode());
   
     switch (xIndex)
     {
     case 0:
         tempPiece->SetTeam(EPieceTeam::White);    
-        State->AliveWhiteTeam.Add(tempPiece);  
+        GM->AliveWhiteTeam.Add(tempPiece);
+        if (tempPiece->GetPieceType() == EPieceType::King)
+        {
+            GM->whiteKingPiece = Cast<ACh_KingPiece>(tempPiece);
+        }
         break;
     case 7:
         tempPiece->SetTeam(EPieceTeam::Black);
-        State->AliveBlackTeam.Add(tempPiece);
+        GM->AliveBlackTeam.Add(tempPiece);
+        if (tempPiece->GetPieceType() == EPieceType::King)
+        {
+            GM->blackKingPiece = Cast<ACh_KingPiece>(tempPiece);
+        }
         break;
     default:
         tempPiece->SetTeam(EPieceTeam::White);
-        State->AliveWhiteTeam.Add(tempPiece);
+        GM->AliveWhiteTeam.Add(tempPiece);
         break;
     }
 }
