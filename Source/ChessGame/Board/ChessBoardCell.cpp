@@ -40,13 +40,9 @@ void AChessBoardCell::SetDefaultMaterial(int index)
     CellMesh->SetMaterial(0, m_DefaultMaterials[index]);
 }
 
-void AChessBoardCell::SetMaterial(int index)
+void AChessBoardCell::SetSelectedMaterial(int index, bool bDrawRender)
 {
-    CellMesh->SetMaterial(0, m_DefaultMaterials[index]);
-}
-
-void AChessBoardCell::SetSelectedMaterial(int index)
-{
+    if (!bDrawRender) { return; }
     SelectMesh->SetMaterial(0, m_SelectedMaterials[index]);
 }
 

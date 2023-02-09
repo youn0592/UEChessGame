@@ -18,125 +18,9 @@ void ACh_QueenPiece::Tick(float DeltaTime)
 
 TArray<AChessBoardCell*> ACh_QueenPiece::CheckNextMove()
 {
-    CheckForCheck();
-    return m_moveableCells;
-}
-
-void ACh_QueenPiece::CheckForCheck()
-{
     m_moveableCells.Empty();
-    int nextIndex = 1;
-    int nextAltIndex = 0;
-    int loopIndex = m_boardSizeX * 2;
-
-    int newX, newY;
-    newX = m_xIndex;
-    newY = m_yIndex;
-
-    bool bIsPositive = true;
-    bool bIsAltPostive = true;
-    AChessBoardCell* NewCell;
-
-    for (int i = 0; i < loopIndex; i++)
-    {
-        newX += nextIndex;
-        newY += nextAltIndex;
-
-        if (m_gameBoard->GetCellAtIndex(newX, newY) && IsCellEmpty(newX, newY))
-        {
-            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
-            m_moveableCells.Add(NewCell);
-            continue;
-        }
-        else if (m_gameBoard->GetCellAtIndex(newX, newY) && !IsCellEmpty(newX, newY))
-        {
-            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
-            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam && NewCell->IsKingOnCell())
-            {
-                m_Gamemode->KingInCheck(m_OppositeTeam);
-                m_moveableCells.Add(NewCell);
-            }
-        }
-
-        if (bIsPositive)
-        {
-            newX = m_xIndex;
-            nextIndex = -1;
-            bIsPositive = false;
-            continue;
-        }
-        if (bIsAltPostive)
-        {
-            newX = m_xIndex;
-            newY = m_yIndex;
-            nextIndex = 0;
-            nextAltIndex = 1;
-            bIsAltPostive = false;
-            continue;
-        }
-        if (!bIsAltPostive)
-        {
-            newY = m_yIndex;
-            nextAltIndex = -1;
-            continue;
-        }
-        break;
-    }
-
-    newX = m_xIndex;
-    newY = m_yIndex;
-    nextIndex = 1;
-    nextAltIndex = -1;
-    bIsPositive = true;
-    bIsAltPostive = true;
-
-    for (int i = 0; i < loopIndex; i++)
-    {
-        newX += nextIndex;
-        newY -= nextAltIndex;
-        if (m_gameBoard->GetCellAtIndex(newX, newY) && IsCellEmpty(newX, newY))
-        {
-            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
-            m_moveableCells.Add(NewCell);
-            continue;
-        }
-        else if (m_gameBoard->GetCellAtIndex(newX, newY) && !IsCellEmpty(newX, newY))
-        {
-            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
-            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam && NewCell->IsKingOnCell())
-            {
-                m_Gamemode->KingInCheck(m_OppositeTeam);
-                m_moveableCells.Add(NewCell);
-            }
-        }
-
-        if (bIsPositive)
-        {
-            newX = m_xIndex;
-            newY = m_yIndex;
-            nextIndex *= -1;
-            nextAltIndex *= -1;
-            bIsPositive = false;
-            continue;
-        }
-        if (bIsAltPostive)
-        {
-            newX = m_xIndex;
-            newY = m_yIndex;
-            nextAltIndex *= -1;
-            bIsAltPostive = false;
-            continue;
-        }
-        if (!bIsAltPostive)
-        {
-            newX = m_xIndex;
-            newY = m_yIndex;
-            nextIndex *= -1;
-            nextAltIndex *= -1;
-            continue;
-        }
-        break;
-    }
+    CalculateMove(false);
+    return m_moveableCells;
 }
 
 void ACh_QueenPiece::BeginPlay()
@@ -144,7 +28,7 @@ void ACh_QueenPiece::BeginPlay()
     Super::BeginPlay();
 }
 
-void ACh_QueenPiece::CalculateMove()
+void ACh_QueenPiece::CalculateMove(bool bDrawRender)
 {
     int nextIndex = 1;
     int nextAltIndex = 0;
@@ -166,7 +50,7 @@ void ACh_QueenPiece::CalculateMove()
         if (m_gameBoard->GetCellAtIndex(newX, newY) && IsCellEmpty(newX, newY))
         {
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
-            NewCell->SetSelectedMaterial(1);
+            NewCell->SetSelectedMaterial(1, bDrawRender);
             m_moveableCells.Add(NewCell);
             continue;
         }
@@ -175,7 +59,11 @@ void ACh_QueenPiece::CalculateMove()
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
             if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
             {
-                NewCell->SetSelectedMaterial(2);
+                if (bDrawRender == false && NewCell->IsKingOnCell())
+                {
+                    m_Gamemode->KingInCheck(m_OppositeTeam);
+                }
+                NewCell->SetSelectedMaterial(2, bDrawRender);
                 m_moveableCells.Add(NewCell);
             }
         }
@@ -219,7 +107,7 @@ void ACh_QueenPiece::CalculateMove()
         if (m_gameBoard->GetCellAtIndex(newX, newY) && IsCellEmpty(newX, newY))
         {
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
-            NewCell->SetSelectedMaterial(1);
+            NewCell->SetSelectedMaterial(1, bDrawRender);
             m_moveableCells.Add(NewCell);
             continue;
         }
@@ -228,7 +116,11 @@ void ACh_QueenPiece::CalculateMove()
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
             if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
             {
-                NewCell->SetSelectedMaterial(2);
+                if (bDrawRender == false && NewCell->IsKingOnCell())
+                {
+                    m_Gamemode->KingInCheck(m_OppositeTeam);
+                }
+                NewCell->SetSelectedMaterial(2, bDrawRender);
                 m_moveableCells.Add(NewCell);
             }
         }

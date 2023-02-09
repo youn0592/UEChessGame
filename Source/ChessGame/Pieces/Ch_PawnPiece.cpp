@@ -31,58 +31,36 @@ void ACh_PawnPiece::SetTeam(EPieceTeam team)
     {
     case EPieceTeam::White:
         m_Direction = 1;
+        m_EndGame = 7;
         break;
 
     case EPieceTeam::Black:
         m_Direction = -1;
+        m_EndGame = 0;
         break;
     }
 }
 
 TArray<AChessBoardCell*> ACh_PawnPiece::CheckNextMove()
 {
-    CheckForCheck();
-    return m_moveableCells;
-}
-
-void ACh_PawnPiece::CheckForCheck()
-{
     m_moveableCells.Empty();
-    AChessBoardCell* NewCell;
-    int newX, newY;
-    int nextIndex = 1;
-    newX = m_xIndex;
-    newY = m_yIndex;
-
-    for (int i = 0; i < 2; i++)
-    {
-        newX += m_Direction;
-        newY += nextIndex;
-
-        if (m_gameBoard->GetCellAtIndex(newX, newY) && !IsCellEmpty(newX, newY))
-        {
-            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
-            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam && NewCell->IsKingOnCell())
-            {
-                m_moveableCells.Add(NewCell);
-                m_Gamemode->KingInCheck(m_OppositeTeam);
-            }
-
-        }
-
-        newX = m_xIndex;
-        newY = m_yIndex;
-        nextIndex *= -1;
-    }
+    CalculateKill(false);
+    return m_moveableCells;
 }
 
 void ACh_PawnPiece::MovePiece(AChessBoardCell* selectedCell)
 {
     Super::MovePiece(selectedCell);
+    int x, y;
+    selectedCell->GetIndex(x, y);
+    if (x == m_EndGame)
+    {
+        m_Gamemode->PawnReachedEnd(this);
+    }
     if (bFirstMove) { bFirstMove = false; }
 }
 
-void ACh_PawnPiece::CalculateMove()
+void ACh_PawnPiece::CalculateMove(bool bDrawRender)
 {
     int loopIndex;
     loopIndex = 1 + bFirstMove;
@@ -96,17 +74,17 @@ void ACh_PawnPiece::CalculateMove()
         if (m_gameBoard->GetCellAtIndex(newX, m_yIndex) && IsCellEmpty(newX, m_yIndex))
         {
             NewCell = m_gameBoard->GetCellAtIndex(newX, m_yIndex);
-            NewCell->SetSelectedMaterial(1);
+            NewCell->SetSelectedMaterial(1, bDrawRender);
             m_moveableCells.Add(NewCell);
             continue;
         }
         break;
     }
 
-    CalculateKill();
+    CalculateKill(bDrawRender);
 }
 
-void ACh_PawnPiece::CalculateKill()
+void ACh_PawnPiece::CalculateKill(bool bDrawRender)
 {
     AChessBoardCell* NewCell;
     int newX, newY;
@@ -126,7 +104,11 @@ void ACh_PawnPiece::CalculateKill()
 
             if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
             {
-                NewCell->SetSelectedMaterial(2);
+                if (bDrawRender == false && NewCell->IsKingOnCell())
+                {
+                    m_Gamemode->KingInCheck(m_OppositeTeam);
+                }
+                NewCell->SetSelectedMaterial(2, bDrawRender);
                 m_moveableCells.Add(NewCell);
             }
 

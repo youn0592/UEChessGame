@@ -29,10 +29,9 @@ TArray<AChessPiece*> ACh_KingPiece::GetCheckingPieces()
 void ACh_KingPiece::BeginPlay()
 {
     Super::BeginPlay();
-
 }
 
-void ACh_KingPiece::CalculateMove()
+void ACh_KingPiece::CalculateMove(bool bDrawRender)
 {
     int loopIndex = m_KingMoves.Num();
     bool bSkipRun = false;
@@ -49,6 +48,7 @@ void ACh_KingPiece::CalculateMove()
             if (m_gameBoard->GetCellAtIndex(newX, newY) == deathCell)
             {
                 bSkipRun = true;
+                break;
             }
         }
 
@@ -61,7 +61,7 @@ void ACh_KingPiece::CalculateMove()
         if (m_gameBoard->GetCellAtIndex(newX, newY) && IsCellEmpty(newX, newY))
         {
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
-            NewCell->SetSelectedMaterial(1);
+            NewCell->SetSelectedMaterial(1, bDrawRender);
             m_moveableCells.Add(NewCell);
         }
         else if (m_gameBoard->GetCellAtIndex(newX, newY) && !IsCellEmpty(newX, newY))
@@ -69,7 +69,7 @@ void ACh_KingPiece::CalculateMove()
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
             if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
             {
-                NewCell->SetSelectedMaterial(2);
+                NewCell->SetSelectedMaterial(2, bDrawRender);
                 m_moveableCells.Add(NewCell);
             }
         }

@@ -135,7 +135,7 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
 
     m_Gamemode->SetCurrentTeam(m_CurrentTeam);
     PieceUnselected();
-    CheckForCheck();
+    CalculateMove(false);
 }
 
 bool AChessPiece::IsCellEmpty(int xIndex, int yIndex)
@@ -152,7 +152,7 @@ void AChessPiece::PieceSelected()
     if (!bIsAlive) { return; }
 
     bIsSelected = true;
-    CalculateMove();
+    CalculateMove(true);
 }
 
 void AChessPiece::PieceUnselected()
@@ -161,7 +161,7 @@ void AChessPiece::PieceUnselected()
 
     for (auto moveableCell : m_moveableCells)
     {
-        moveableCell->SetSelectedMaterial(0);
+        moveableCell->SetSelectedMaterial(0, true);
     }
 
     m_moveableCells.Empty();
@@ -189,20 +189,24 @@ void AChessPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
 
     int SCX, SCY;
     selectedCell->GetIndex(SCX, SCY);
+    AChessBoardCell* savedCell = m_CurrentCell;
 
     for (auto moveableCell : m_moveableCells)
     {
         if (selectedCell == moveableCell)
         {
-            if (m_Gamemode->GetTeamInCheck(m_CurrentTeam) && IsCellEmpty(SCX, SCY))
+            if (IsCellEmpty(SCX, SCY))
             {
                 selectedCell->SetChessPieceOnCell(this);
+                m_CurrentCell->SetChessPieceOnCell(nullptr);
                 if (m_Gamemode->IsKingStillInCheck(m_CurrentTeam, selectedCell, m_PieceType))
                 {
                     selectedCell->SetChessPieceOnCell(nullptr);
+                    m_CurrentCell->SetChessPieceOnCell(this);
                     break;
                 }
                 selectedCell->SetChessPieceOnCell(nullptr);
+                m_CurrentCell->SetChessPieceOnCell(this);
             }
             if (selectedCell->GetChessPieceOnCell() != nullptr)
             {

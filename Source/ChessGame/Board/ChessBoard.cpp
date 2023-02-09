@@ -21,10 +21,10 @@ void AChessBoard::BeginPlay()
 {
     Super::BeginPlay();
 
-    AChessGameModeBase* GM = Cast<AChessGameModeBase>(GetWorld()->GetAuthGameMode());
-    if (GM)
+    m_Gamemode = Cast<AChessGameModeBase>(GetWorld()->GetAuthGameMode());
+    if (m_Gamemode)
     {
-        GM->SetChessBoard(this);
+        m_Gamemode->SetChessBoard(this);
     }
 
     CreateBoard();
@@ -60,6 +60,8 @@ void AChessBoard::CreateBoard()
             }
         }
     }
+
+    SpawnExtraPieces();
 }
 
 void AChessBoard::SpawnPawns(AChessBoardCell* cell, int xIndex)
@@ -110,10 +112,10 @@ void AChessBoard::SpawnPieces(AChessBoardCell* cell, int xIndex, int typeIndex)
         spawnIndex = 3;
         break;
     case 3:
-        spawnIndex = 4;
+        spawnIndex = 5;
         break;
     case 4:
-        spawnIndex = 5;
+        spawnIndex = 4;
         break;
     case 5:
         spawnIndex = 3;
@@ -162,6 +164,22 @@ void AChessBoard::SpawnPieces(AChessBoardCell* cell, int xIndex, int typeIndex)
         tempPiece->SetTeam(EPieceTeam::White);
         GM->AliveWhiteTeam.Add(tempPiece);
         break;
+    }
+}
+
+void AChessBoard::SpawnExtraPieces()
+{
+    FActorSpawnParameters Parms;
+    FVector SpawnLoc = FVector(0.0f, 0.0f, 10000.0f);
+    FRotator SpawnRot = FRotator(0, 0, 0);
+
+    for (int i = 1; i < 5; i++)
+    {
+        for (int k = 0; k < 16; k++)
+        {
+            AChessPiece* tempPiece = GetWorld()->SpawnActor<AChessPiece>(PawnPiecesToSpawn[i], SpawnLoc, SpawnRot, Parms);
+            m_Gamemode->ExtraPieces.Add(tempPiece);
+        }
     }
 }
 

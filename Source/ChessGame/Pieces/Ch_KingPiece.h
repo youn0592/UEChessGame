@@ -26,7 +26,7 @@ public:
 protected:
 
 	virtual void BeginPlay() override;
-	virtual void CalculateMove() override;
+	virtual void CalculateMove(bool bDrawRender) override;
 
 public:
 

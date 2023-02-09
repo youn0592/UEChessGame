@@ -9,6 +9,7 @@
 
 class AChessPiece;
 class AChessBoardCell;
+class AChessGameModeBase;
 
 UCLASS()
 class CHESSGAME_API AChessBoard : public AActor
@@ -40,6 +41,9 @@ protected:
 	UFUNCTION()
 	void SpawnPieces(AChessBoardCell* cell, int xIndex, int yIndex);
 
+	UFUNCTION()
+		void SpawnExtraPieces();
+
 public:	
 
 protected:
@@ -55,6 +59,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = "Spawn")
 	TArray<TSubclassOf<AChessPiece>> PawnPiecesToSpawn;
+
+	AChessGameModeBase* m_Gamemode;
 
 private:
 

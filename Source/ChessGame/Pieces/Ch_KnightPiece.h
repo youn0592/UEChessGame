@@ -22,13 +22,12 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual TArray<AChessBoardCell*> CheckNextMove() override;
-	virtual void CheckForCheck() override;
 
 protected:
 
 	virtual void BeginPlay() override;
 
-	virtual void CalculateMove() override;
+	virtual void CalculateMove(bool bDrawRender) override;
 
 public:
 protected:

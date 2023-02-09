@@ -37,7 +37,6 @@ public:
     virtual void CheckSelectedCell(AChessBoardCell* selectedCell);
 
     virtual TArray<AChessBoardCell*> CheckNextMove() { return TArray<AChessBoardCell*>(); };
-    virtual void CheckForCheck() {};
 
     virtual void KillMovement();
 
@@ -49,7 +48,7 @@ protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
 
-    virtual void CalculateMove() {};
+    virtual void CalculateMove(bool bDrawRender) {};
     virtual void MovePiece(AChessBoardCell* selectedCell);
 
     virtual bool IsCellEmpty(int xIndex, int yIndex);
@@ -84,7 +83,6 @@ protected:
 
     AChessBoardCell* m_CurrentCell;
     TArray<AChessBoardCell*> m_moveableCells;
-    TArray<AChessBoardCell*> m_nextMoveCells;
 
     AChessBoard* m_gameBoard;
 

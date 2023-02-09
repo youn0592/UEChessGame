@@ -24,14 +24,13 @@ public:
     virtual void SetTeam(EPieceTeam team) override;
 
     virtual TArray<AChessBoardCell*> CheckNextMove() override;
-    virtual void CheckForCheck() override;
 
 protected:
 
     virtual void BeginPlay() override;
 
-    virtual void CalculateMove() override;
-    void CalculateKill();
+    virtual void CalculateMove(bool bDrawRender) override;
+    void CalculateKill(bool bDrawRender);
     virtual void MovePiece(AChessBoardCell* selectedCell);
 
 
@@ -41,6 +40,7 @@ protected:
 
     bool bFirstMove;
     int m_Direction;
+    int m_EndGame;
 
 private:
 

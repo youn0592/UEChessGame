@@ -19,8 +19,7 @@ public:
     virtual void Tick(float DeltaTime) override;
 
     void SetDefaultMaterial(int index);
-    void SetMaterial(int index);
-    void SetSelectedMaterial(int index);
+    void SetSelectedMaterial(int index, bool bDrawRender);
     void ResetMaterial();
 
     void SetChessPieceOnCell(class AChessPiece* ChessPiece);

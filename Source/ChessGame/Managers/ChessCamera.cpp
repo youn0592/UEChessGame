@@ -60,7 +60,7 @@ void AChessCamera::LeftClickTriggered(FVector MousePos)
     UWorld* World = GetWorld();
 
     FVector Direction = MousePos - MainCamera->GetComponentLocation();
-    DrawDebugLine(GetWorld(), MainCamera->GetComponentLocation(), MainCamera->GetComponentLocation() + Direction * DistanceFromCamera, FColor::Green, true, 10.0f);
+    //DrawDebugLine(GetWorld(), MainCamera->GetComponentLocation(), MainCamera->GetComponentLocation() + Direction * DistanceFromCamera, FColor::Green, true, 10.0f);
 
     if (World->LineTraceSingleByChannel(hit, MainCamera->GetComponentLocation(), MainCamera->GetComponentLocation() + Direction * DistanceFromCamera, ECollisionChannel::ECC_GameTraceChannel1, Parms))
     {
