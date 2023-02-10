@@ -13,6 +13,8 @@
 class UTextBlock;
 class UCh_PawnPopupWidget;
 class UVerticalBox;
+class USlateBrushAsset;
+class UImage;
 
 UCLASS()
 class CHESSGAME_API UCh_OnScreenWidget : public UUserWidget
@@ -33,6 +35,9 @@ public:
 
 protected:
 
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "UI Images")
+		TArray<USlateBrushAsset*> UiImages;
+
 	UPROPERTY(meta = (BindWidget))
 		UTextBlock* TurnMoveBlock;
 
@@ -44,5 +49,10 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 		UCh_PawnPopupWidget* PawnPopupWindow;
+
+	UPROPERTY(meta = (BindWidget))
+		UImage* IconImage;
+
+	bool bIsWhiteTeam;
 	
 };

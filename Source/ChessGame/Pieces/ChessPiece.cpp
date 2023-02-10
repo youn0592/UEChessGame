@@ -103,11 +103,6 @@ void AChessPiece::SetTeam(EPieceTeam team)
     return;
 }
 
-EPieceTeam AChessPiece::GetTeam()
-{
-    return m_CurrentTeam;
-}
-
 EPieceType AChessPiece::GetPieceType()
 {
     if (m_PieceType == -1)
@@ -122,6 +117,7 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
 {
     if (m_Gamemode->GetCurrentTeam() != m_CurrentTeam) { return; }
     bMovePiece = true;
+    m_Gamemode->SetCurrentTeam(m_CurrentTeam);
     newLocation = selectedCell->GetMiddleOfCell();
     StartPos = GetActorLocation();
     m_Distance = FVector::Distance(StartPos, newLocation);
@@ -133,7 +129,6 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
 
     m_CurrentCell->GetIndex(m_xIndex, m_yIndex);
 
-    m_Gamemode->SetCurrentTeam(m_CurrentTeam);
     PieceUnselected();
     CalculateMove(false);
 }
@@ -186,6 +181,7 @@ AChessBoardCell* AChessPiece::GetCurrentCell()
 void AChessPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
 {
     if (m_moveableCells.Num() == 0) { return; }
+    if (m_Gamemode->GetCurrentTeam() != m_CurrentTeam) { return; }
 
     int SCX, SCY;
     selectedCell->GetIndex(SCX, SCY);

@@ -5,6 +5,7 @@
 #include "../HUD/Ch_PawnPopupWidget.h"
 #include <Components/TextBlock.h>
 #include <Components/VerticalBox.h>
+#include <Components/Image.h>
 
 void UCh_OnScreenWidget::NativeConstruct()
 {
@@ -14,6 +15,7 @@ void UCh_OnScreenWidget::NativeConstruct()
     PawnPopupWindow->SetVisibility(ESlateVisibility::Hidden);
 
     CheckTextVBox->SetVisibility(ESlateVisibility::Hidden);
+    IconImage->SetBrushFromAsset(UiImages[0]);
 }
 
 void UCh_OnScreenWidget::SetPopupWindow(bool bActive)
@@ -41,6 +43,8 @@ void UCh_OnScreenWidget::SetPopupWindow(bool bActive)
 
 void UCh_OnScreenWidget::SetCurrentTeam(FString name)
 {
+    bIsWhiteTeam = !bIsWhiteTeam;
+    IconImage->SetBrushFromAsset(UiImages[bIsWhiteTeam]);
     TurnMoveBlock->SetText(FText::FromString(name));
 }
 

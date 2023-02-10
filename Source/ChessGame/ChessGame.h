@@ -8,7 +8,8 @@ UENUM()
 enum EPieceTeam
 {
     White,
-    Black
+    Black,
+    Empty
 };
 
 UENUM()

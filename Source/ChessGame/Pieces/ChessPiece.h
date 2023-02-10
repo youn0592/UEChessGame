@@ -25,7 +25,8 @@ public:
     AChessPiece();
 
     virtual void SetTeam(EPieceTeam team);
-    virtual EPieceTeam GetTeam();
+    virtual EPieceTeam GetTeam() { return m_CurrentTeam; }
+    virtual EPieceTeam GetOppositeTeam() { return m_OppositeTeam; }
     virtual EPieceType GetPieceType();
 
     virtual void PieceSelected();

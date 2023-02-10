@@ -186,6 +186,7 @@ void AChessGameModeBase::KingInCheck(EPieceTeam team)
 void AChessGameModeBase::PawnReachedEnd(ACh_PawnPiece* pawn)
 {
     m_EndedPawn = pawn;
+    m_CurrentTeam = EPieceTeam::Empty;
     m_ChessHUD->ShowPawnPopupWindow(true);
 }
 
@@ -221,6 +222,7 @@ void AChessGameModeBase::TransformPawn(EPieceType pieceType)
     }
     m_ChessHUD->ShowPawnPopupWindow(false);
     m_EndedPawn->SetCurrentCell(nullptr);
+    m_CurrentTeam = m_EndedPawn->GetOppositeTeam();
     m_EndedPawn = nullptr;
 }
 
