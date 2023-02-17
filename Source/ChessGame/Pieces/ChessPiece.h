@@ -54,6 +54,8 @@ protected:
 
     virtual bool IsCellEmpty(int xIndex, int yIndex);
 
+    virtual void KillPiece(AChessBoardCell* selectedCell);
+
 public:
 
     bool bIsAlive;
@@ -75,7 +77,7 @@ protected:
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Properties")
         float MovementSpeed = 2.0f;
 
-    bool bIsSelected, bMovePiece;
+    bool bIsSelected, bMovePiece, bCastling;
     FVector newLocation;
 
     EPieceTeam m_CurrentTeam;

@@ -86,6 +86,7 @@ void ACh_PawnPiece::CalculateMove(bool bDrawRender)
 
 void ACh_PawnPiece::CalculateKill(bool bDrawRender)
 {
+    if (!bIsAlive) { return; }
     AChessBoardCell* NewCell;
     int newX, newY;
     int nextIndex = 1;

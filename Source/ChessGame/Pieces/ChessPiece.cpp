@@ -64,7 +64,7 @@ void AChessPiece::Tick(float DeltaTime)
         movePercent = FMath::Clamp(movePercent, 0, 1);
 
         float z = FMath::Lerp(0.0f, 10.0f, 4 * (movePercent - movePercent * movePercent));
-       
+
         SetActorLocation(FMath::Lerp(StartPos, newLocation, (1 + FMath::Cos(PI * (movePercent + 1))) / 2) + FVector::UpVector * z);
 
         if (movePercent >= 1)
@@ -117,7 +117,10 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
 {
     if (m_Gamemode->GetCurrentTeam() != m_CurrentTeam) { return; }
     bMovePiece = true;
-    m_Gamemode->SetCurrentTeam(m_CurrentTeam);
+    if (!bCastling)
+    {
+        m_Gamemode->SetCurrentTeam(m_CurrentTeam);
+    }
     newLocation = selectedCell->GetMiddleOfCell();
     StartPos = GetActorLocation();
     m_Distance = FVector::Distance(StartPos, newLocation);
@@ -136,6 +139,21 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
 bool AChessPiece::IsCellEmpty(int xIndex, int yIndex)
 {
     return m_gameBoard->GetCellAtIndex(xIndex, yIndex)->GetChessPieceOnCell() == nullptr;
+}
+
+void AChessPiece::KillPiece(AChessBoardCell* selectedCell)
+{
+    FVector loc = m_Gamemode->GetDeadPieceLocation(m_CurrentTeam);
+    AChessPiece* killingPiece = selectedCell->GetChessPieceOnCell();
+    if (killingPiece == nullptr) { return; }
+    killingPiece->KillMovement();
+    killingPiece->SetActorLocation(loc);
+    killingPiece->bIsAlive = false;
+    killingPiece->SetCurrentCell(nullptr);
+    selectedCell->SetChessPieceOnCell(nullptr);
+    loc.X += 30 * m_teamDir;
+    m_Gamemode->RemovePieceFromTeam(m_OppositeTeam, killingPiece);
+    m_Gamemode->SetDeadPieceLocation(m_CurrentTeam, loc);
 }
 
 void AChessPiece::PieceSelected()
@@ -206,17 +224,19 @@ void AChessPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
             }
             if (selectedCell->GetChessPieceOnCell() != nullptr)
             {
-                FVector loc = m_Gamemode->GetDeadPieceLocation(m_CurrentTeam);
-                AChessPiece* killingPiece = selectedCell->GetChessPieceOnCell();
-                if (killingPiece == nullptr) { return; }
-                killingPiece->KillMovement();
-                killingPiece->SetActorLocation(loc);
-                killingPiece->bIsAlive = false;
-                killingPiece->SetCurrentCell(nullptr);
-                selectedCell->SetChessPieceOnCell(nullptr);
-                loc.X += 30 * m_teamDir;
-                m_Gamemode->RemovePieceFromTeam(m_OppositeTeam, killingPiece);
-                m_Gamemode->SetDeadPieceLocation(m_CurrentTeam, loc);
+                AChessPiece* tempPiece = selectedCell->GetChessPieceOnCell();
+                m_CurrentCell->SetChessPieceOnCell(nullptr);
+                tempPiece->bIsAlive = false;
+                if (m_Gamemode->IsKingStillInCheck(m_CurrentTeam, selectedCell, m_PieceType))
+                {
+                    m_CurrentCell->SetChessPieceOnCell(this);
+                    selectedCell->SetChessPieceOnCell(tempPiece);
+                    tempPiece->bIsAlive = true;
+                    break;
+                }
+                m_CurrentCell->SetChessPieceOnCell(this);
+                selectedCell->SetChessPieceOnCell(tempPiece);
+                KillPiece(selectedCell);
             }
             MovePiece(selectedCell);
             break;

@@ -30,6 +30,7 @@ TArray<AChessBoardCell*> ACh_KnightPiece::CheckNextMove()
 
 void ACh_KnightPiece::CalculateMove(bool bDrawRender)
 {
+    if (!bIsAlive) { return; }
     int loopIndex = m_KnightMoves.Num();
     AChessBoardCell* NewCell;
 

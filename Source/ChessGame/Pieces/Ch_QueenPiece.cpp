@@ -30,6 +30,7 @@ void ACh_QueenPiece::BeginPlay()
 
 void ACh_QueenPiece::CalculateMove(bool bDrawRender)
 {
+    if (!bIsAlive) { return; }
     int nextIndex = 1;
     int nextAltIndex = 0;
     int loopIndex = m_boardSizeX * 2;
@@ -62,6 +63,7 @@ void ACh_QueenPiece::CalculateMove(bool bDrawRender)
                 if (bDrawRender == false && NewCell->IsKingOnCell())
                 {
                     m_Gamemode->KingInCheck(m_OppositeTeam);
+                    continue;
                 }
                 NewCell->SetSelectedMaterial(2, bDrawRender);
                 m_moveableCells.Add(NewCell);
@@ -119,6 +121,7 @@ void ACh_QueenPiece::CalculateMove(bool bDrawRender)
                 if (bDrawRender == false && NewCell->IsKingOnCell())
                 {
                     m_Gamemode->KingInCheck(m_OppositeTeam);
+                    continue;
                 }
                 NewCell->SetSelectedMaterial(2, bDrawRender);
                 m_moveableCells.Add(NewCell);

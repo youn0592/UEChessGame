@@ -30,7 +30,9 @@ protected:
 
     void HandleLeftClick(const FInputActionValue& Instance);
     void HandleRightClick(const FInputActionValue& Instance);
+    void HandleMouseWheel(const FInputActionValue& Instance);
     void HandleMousePosition(const FInputActionValue& Instance);
+    void HandleADInput(const FInputActionValue& Instance);
 
 public:
 
@@ -40,16 +42,22 @@ protected:
     AChessCamera* ControlledCamera;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
-    UInputMappingContext* PlayerMapping;
+        UInputMappingContext* PlayerMapping;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
-    UInputAction* LeftClickAction;
+        UInputAction* LeftClickAction;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
-    UInputAction* RightClickAction;
+        UInputAction* RightClickAction;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
-    UInputAction* MousePosAction;
+        UInputAction* MousePosAction;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
+        UInputAction* MouseScrollWheel;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
+        UInputAction* ADKeyboardAction;
 
 private:
 

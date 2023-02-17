@@ -17,8 +17,8 @@ AChessGameModeBase::AChessGameModeBase()
 void AChessGameModeBase::BeginPlay()
 {
     Super::BeginPlay();
-    m_whiteDeadPieceLoc = FVector(50, -55, 0);
-    m_blackDeadPieceLoc = FVector(300, 405, 0);
+    m_whiteDeadPieceLoc = FVector(50, -74, 0);
+    m_blackDeadPieceLoc = FVector(300, 420, 0);
     m_CurrentTeam = EPieceTeam::White;
 
     m_ChessHUD = Cast<ACh_ChessHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());

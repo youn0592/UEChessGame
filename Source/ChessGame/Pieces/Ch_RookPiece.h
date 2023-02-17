@@ -19,17 +19,23 @@ public:
 	ACh_RookPiece();
 
 	virtual void Tick(float DeltaTime) override;
-
 	virtual TArray<AChessBoardCell*> CheckNextMove() override;
+	virtual void CheckSelectedCell(AChessBoardCell* selectedCell) override;
+
+	bool CanCastleRook();
 
 protected:
 
 	virtual void BeginPlay() override;
 
+	virtual void MovePiece(AChessBoardCell* selectedCell) override;
 	virtual void CalculateMove(bool bDrawRender) override;
 
 public:
 protected:
+
+	bool bFirstMove = true;
+
 private:
 	
 

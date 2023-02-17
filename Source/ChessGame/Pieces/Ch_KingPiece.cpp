@@ -2,6 +2,7 @@
 
 
 #include "../Pieces/Ch_KingPiece.h"
+#include "../Pieces/Ch_RookPiece.h"
 #include "../Managers/ChessGameModeBase.h"
 #include "../Board/ChessBoard.h"
 #include "../Board/ChessBoardCell.h"
@@ -16,23 +17,52 @@ void ACh_KingPiece::Tick(float DeltaTime)
     Super::Tick(DeltaTime);
 }
 
-void ACh_KingPiece::AddCheckingPiece(AChessPiece* checkingPiece)
+void ACh_KingPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
 {
-    m_CheckedPieces.Add(checkingPiece);
+    if (m_CastleCells.Num() > 0)
+    {
+        ACh_RookPiece* m_Rook = Cast<ACh_RookPiece>(selectedCell->GetChessPieceOnCell());
+        int SCX, SCY, KNI, RNI, KNY, RNY;
+        KNI = -2; RNI = 2;
+        selectedCell->GetIndex(SCX, SCY);
+        if (SCY == 7)
+        {
+            KNI *= -1; RNI = -3;
+        }
+        KNY = m_yIndex + KNI;
+        RNY = SCY + RNI;
+        selectedCell = m_gameBoard->GetCellAtIndex(m_xIndex, KNY);
+        m_moveableCells.Add(m_gameBoard->GetCellAtIndex(m_xIndex, KNY));
+        AChessBoardCell* rookCell = m_gameBoard->GetCellAtIndex(m_xIndex, RNY);
+        m_Rook->GetCurrentCell()->SetSelectedMaterial(0, true);
+        m_Rook->CheckSelectedCell(rookCell);
+        m_CastleCells.Empty();
+    }
+
+    Super::CheckSelectedCell(selectedCell);
 }
 
-TArray<AChessPiece*> ACh_KingPiece::GetCheckingPieces()
-{
-    return m_CheckedPieces;
-}
+//TArray<AChessBoardCell*> ACh_KingPiece::CheckNextMove()
+//{
+//    m_moveableCells.Empty();
+//    CalculateMove(false);
+//    return m_moveableCells;
+//}
 
 void ACh_KingPiece::BeginPlay()
 {
     Super::BeginPlay();
 }
 
+void ACh_KingPiece::MovePiece(AChessBoardCell* selectedCell)
+{
+    if (bFirstMove) { bFirstMove = false; }
+    Super::MovePiece(selectedCell);
+}
+
 void ACh_KingPiece::CalculateMove(bool bDrawRender)
 {
+    if (!bIsAlive) { return; }
     int loopIndex = m_KingMoves.Num();
     bool bSkipRun = false;
     TArray<AChessBoardCell*> potentialDeathCells = m_Gamemode->GetTeamNextMove(m_OppositeTeam);
@@ -74,6 +104,28 @@ void ACh_KingPiece::CalculateMove(bool bDrawRender)
             }
         }
 
+    }
+    if (!bDrawRender) { return; }
+    NewCell = nullptr;
+    if (bFirstMove && (!IsCellEmpty(m_xIndex, 0) || !IsCellEmpty(m_xIndex,7)))
+    {
+        int index = 0;
+        for (int i = 0; i < 2; i++)
+        {
+            NewCell = m_gameBoard->GetCellAtIndex(m_xIndex, index);
+            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_CurrentTeam)
+            {
+                ACh_RookPiece* CastleRook = Cast<ACh_RookPiece>(NewCell->GetChessPieceOnCell());
+                if (CastleRook->CanCastleRook())
+                {
+                    NewCell->SetSelectedMaterial(3, bDrawRender);
+                    m_CastleCells.Add(NewCell);
+                    break;
+                }
+                index = 7;
+                continue;
+            }
+        }
     }
 
 }

@@ -30,6 +30,7 @@ void ACh_BishopPiece::BeginPlay()
 
 void ACh_BishopPiece::CalculateMove(bool bDrawRender)
 {
+    if (!bIsAlive) { return; }
     int newX, newY;
     newX = m_xIndex;
     newY = m_yIndex;
@@ -60,6 +61,7 @@ void ACh_BishopPiece::CalculateMove(bool bDrawRender)
                 if (bDrawRender == false && NewCell->IsKingOnCell())
                 {
                     m_Gamemode->KingInCheck(m_OppositeTeam);
+                    continue;
                 }
                 NewCell->SetSelectedMaterial(2, bDrawRender);
                 m_moveableCells.Add(NewCell);

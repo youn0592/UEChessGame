@@ -113,3 +113,11 @@ void AChessCamera::LeftClickTriggered(FVector MousePos)
     }
 }
 
+void AChessCamera::MouseWheelSpun(float wheelValue)
+{
+    //wheelValue = FMath::Clamp(wheelValue, -1.0f, 1.0f);
+    float newValue;
+    newValue = FMath::Clamp((CameraArm->TargetArmLength - wheelValue * m_MouseSpeed), 100.0f, 500.0f);
+    CameraArm->TargetArmLength = FMath::Lerp(CameraArm->TargetArmLength, newValue, 1.0f);
+}
+

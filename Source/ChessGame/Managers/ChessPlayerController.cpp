@@ -40,6 +40,8 @@ void AChessPlayerController::SetupInputComponent()
         Input->BindAction(LeftClickAction, ETriggerEvent::Triggered, this, &AChessPlayerController::HandleLeftClick);
         Input->BindAction(RightClickAction, ETriggerEvent::Triggered, this, &AChessPlayerController::HandleRightClick);
         Input->BindAction(MousePosAction, ETriggerEvent::None, this, &AChessPlayerController::HandleMousePosition);
+        Input->BindAction(MouseScrollWheel, ETriggerEvent::Triggered, this, &AChessPlayerController::HandleMouseWheel);
+        Input->BindAction(ADKeyboardAction, ETriggerEvent::Triggered, this, &AChessPlayerController::HandleADInput);
     }
 
 
@@ -73,6 +75,13 @@ void AChessPlayerController::HandleRightClick(const FInputActionValue& Instance)
 
 }
 
+void AChessPlayerController::HandleMouseWheel(const FInputActionValue& Instance)
+{
+    const float ScrollWheelValue = Instance.Get<float>();
+    ControlledCamera->MouseWheelSpun(ScrollWheelValue);
+    UE_LOG(LogTemp, Warning, TEXT("Value: %f"), ScrollWheelValue);
+}
+
 void AChessPlayerController::HandleMousePosition(const FInputActionValue& Instance)
 {
     FVector2D AxisValue = Instance.Get<FVector2D>();
@@ -80,6 +89,11 @@ void AChessPlayerController::HandleMousePosition(const FInputActionValue& Instan
     GetMousePosition(CurrentMousePos.X, CurrentMousePos.Y);
 
 
-/*    UE_LOG(LogTemp, Warning, TEXT("MousePos: %f , %f"), CurrentMousePos.X, CurrentMousePos.Y)*/;
+    /*    UE_LOG(LogTemp, Warning, TEXT("MousePos: %f , %f"), CurrentMousePos.X, CurrentMousePos.Y)*/;
+
+}
+
+void AChessPlayerController::HandleADInput(const FInputActionValue& Instance)
+{
 
 }

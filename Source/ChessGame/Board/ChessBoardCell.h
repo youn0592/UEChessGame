@@ -31,6 +31,9 @@ public:
     void SetIndex(int xIndex, int yIndex);
     void GetIndex(int& xIndex,  int& yIndex);
 
+    int GetX() { return m_indexX; }
+    int GetY() { return m_indexY; }
+
 protected:
 
     // Called when the game starts or when spawned

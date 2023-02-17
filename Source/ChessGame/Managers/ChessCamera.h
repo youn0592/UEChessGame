@@ -21,6 +21,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	void LeftClickTriggered(FVector MousePos);
+	void MouseWheelSpun(float wheelValue);
 
 protected:
 
@@ -40,6 +41,8 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
 		float DistanceFromCamera = 500.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+		float m_MouseSpeed = 3.0f;
 
 
 private: 

@@ -9,6 +9,9 @@
 /**
  * 
  */
+
+class AChessPieceCell;
+
 UCLASS()
 class CHESSGAME_API ACh_KingPiece : public AChessPiece
 {
@@ -19,13 +22,14 @@ public:
 	ACh_KingPiece();
 
 	virtual void Tick(float DeltaTime) override;
+	virtual void CheckSelectedCell(AChessBoardCell* selectedCell) override;
 
-	void AddCheckingPiece(AChessPiece* checkingPiece);
-	TArray<AChessPiece*> GetCheckingPieces();
+	//virtual TArray<AChessBoardCell*> CheckNextMove() override;
 
 protected:
 
 	virtual void BeginPlay() override;
+	virtual void MovePiece(AChessBoardCell* selectedCell) override;
 	virtual void CalculateMove(bool bDrawRender) override;
 
 public:
@@ -34,9 +38,10 @@ public:
 
 protected:
 
+	bool bFirstMove = true;
+
 	TArray<FIntVector2> m_KingMoves{{0,1},{1,0},{0,-1},{-1,0},{1,1},{-1,-1},{-1, 1},{1,-1}};
-	
-	TArray<AChessPiece*> m_CheckedPieces;
+	TArray<AChessBoardCell*> m_CastleCells;
 
 private:
 };
