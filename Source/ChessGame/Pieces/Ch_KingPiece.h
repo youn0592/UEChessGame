@@ -23,6 +23,7 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 	virtual void CheckSelectedCell(AChessBoardCell* selectedCell) override;
+	virtual void PieceUnselected() override;
 
 	//virtual TArray<AChessBoardCell*> CheckNextMove() override;
 

@@ -98,7 +98,7 @@ bool AChessGameModeBase::IsKingStillInCheck(EPieceTeam team, AChessBoardCell* po
     {
     case EPieceTeam::White:
         moveableCells = GetTeamNextMove(EPieceTeam::Black);
-
+        
         for (auto cells : moveableCells)
         {
             if (cells == whiteKingPiece->GetCurrentCell() && pieceType != EPieceType::King)
@@ -107,7 +107,7 @@ bool AChessGameModeBase::IsKingStillInCheck(EPieceTeam team, AChessBoardCell* po
             }
         }
         m_ChessHUD->SetTeamInCheck(EPieceTeam::White, false);
-        return false;
+         return false;
         break;
 
     case EPieceTeam::Black:
@@ -172,12 +172,10 @@ void AChessGameModeBase::KingInCheck(EPieceTeam team)
     {
     case EPieceTeam::White:
         bWhiteKingChecked = true;
-        UE_LOG(LogTemp, Warning, TEXT("White King in Check"));
         m_ChessHUD->SetTeamInCheck(EPieceTeam::White, bWhiteKingChecked);
         break;
     case EPieceTeam::Black:
         bBlackKingChecked = true;
-        UE_LOG(LogTemp, Warning, TEXT("Black King in Check"));
         m_ChessHUD->SetTeamInCheck(EPieceTeam::Black, bBlackKingChecked);
         break;
     }

@@ -108,6 +108,7 @@ void ACh_PawnPiece::CalculateKill(bool bDrawRender)
                 if (bDrawRender == false && NewCell->IsKingOnCell())
                 {
                     m_Gamemode->KingInCheck(m_OppositeTeam);
+                    m_moveableCells.Add(NewCell);
                 }
                 NewCell->SetSelectedMaterial(2, bDrawRender);
                 m_moveableCells.Add(NewCell);

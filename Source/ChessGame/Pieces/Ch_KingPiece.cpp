@@ -19,27 +19,39 @@ void ACh_KingPiece::Tick(float DeltaTime)
 
 void ACh_KingPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
 {
-    if (m_CastleCells.Num() > 0)
+    for (int i = 0; i < m_CastleCells.Num(); i++)
     {
-        ACh_RookPiece* m_Rook = Cast<ACh_RookPiece>(selectedCell->GetChessPieceOnCell());
-        int SCX, SCY, KNI, RNI, KNY, RNY;
-        KNI = -2; RNI = 2;
-        selectedCell->GetIndex(SCX, SCY);
-        if (SCY == 7)
+        if (m_CastleCells[i] == selectedCell)
         {
-            KNI *= -1; RNI = -3;
+            ACh_RookPiece* m_Rook = Cast<ACh_RookPiece>(selectedCell->GetChessPieceOnCell());
+            int SCX, SCY, KNI, RNI, KNY, RNY;
+            KNI = -2; RNI = 2;
+            selectedCell->GetIndex(SCX, SCY);
+            if (SCY == 7)
+            {
+                KNI *= -1; RNI = -3;
+            }
+            KNY = m_yIndex + KNI;
+            RNY = SCY + RNI;
+            selectedCell = m_gameBoard->GetCellAtIndex(m_xIndex, KNY);
+            m_moveableCells.Add(m_gameBoard->GetCellAtIndex(m_xIndex, KNY));
+            AChessBoardCell* rookCell = m_gameBoard->GetCellAtIndex(m_xIndex, RNY);
+            m_CastleCells[i]->SetSelectedMaterial(0, true);
+            m_Rook->SetCanCastle(true);
+            m_Rook->CheckSelectedCell(rookCell);
+            m_CastleCells.Empty();
+            break;
         }
-        KNY = m_yIndex + KNI;
-        RNY = SCY + RNI;
-        selectedCell = m_gameBoard->GetCellAtIndex(m_xIndex, KNY);
-        m_moveableCells.Add(m_gameBoard->GetCellAtIndex(m_xIndex, KNY));
-        AChessBoardCell* rookCell = m_gameBoard->GetCellAtIndex(m_xIndex, RNY);
-        m_Rook->GetCurrentCell()->SetSelectedMaterial(0, true);
-        m_Rook->CheckSelectedCell(rookCell);
-        m_CastleCells.Empty();
+        m_CastleCells[i]->SetSelectedMaterial(0, true);
     }
 
     Super::CheckSelectedCell(selectedCell);
+}
+
+void ACh_KingPiece::PieceUnselected()
+{
+    m_CastleCells.Empty();
+    Super::PieceUnselected();
 }
 
 //TArray<AChessBoardCell*> ACh_KingPiece::CheckNextMove()
@@ -107,7 +119,8 @@ void ACh_KingPiece::CalculateMove(bool bDrawRender)
     }
     if (!bDrawRender) { return; }
     NewCell = nullptr;
-    if (bFirstMove && (!IsCellEmpty(m_xIndex, 0) || !IsCellEmpty(m_xIndex,7)))
+
+    if (bFirstMove && (!IsCellEmpty(m_xIndex, 0) || !IsCellEmpty(m_xIndex, 7)))
     {
         int index = 0;
         for (int i = 0; i < 2; i++)

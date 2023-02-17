@@ -30,7 +30,10 @@ TArray<AChessBoardCell*> ACh_RookPiece::CheckNextMove()
 
 void ACh_RookPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
 {
-    bCastling = true;
+    if (bCastling)
+    {
+        m_moveableCells.Add(selectedCell);
+    }
     Super::CheckSelectedCell(selectedCell);
     bCastling = false;
 }
@@ -51,7 +54,7 @@ bool ACh_RookPiece::CanCastleRook()
         if (m_gameBoard->GetCellAtIndex(m_xIndex, newY) && !IsCellEmpty(m_xIndex, newY))
         {
             AChessBoardCell* tempCell = m_gameBoard->GetCellAtIndex(m_xIndex, newY);
-            if (tempCell->GetChessPieceOnCell()->GetPieceType() == EPieceType::King)
+            if (tempCell->GetChessPieceOnCell()->GetPieceType() == EPieceType::King && tempCell->GetChessPieceOnCell()->GetTeam() == m_CurrentTeam)
             {
                 return true;
             }
@@ -106,8 +109,8 @@ void ACh_RookPiece::CalculateMove(bool bDrawRender)
             {
                 if (bDrawRender == false && NewCell->IsKingOnCell())
                 {
-                    
                     m_Gamemode->KingInCheck(m_OppositeTeam);
+                    m_moveableCells.Add(NewCell);
                     continue;
                 }
                 NewCell->SetSelectedMaterial(2, bDrawRender);

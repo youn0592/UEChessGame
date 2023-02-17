@@ -22,6 +22,7 @@ public:
 	virtual TArray<AChessBoardCell*> CheckNextMove() override;
 	virtual void CheckSelectedCell(AChessBoardCell* selectedCell) override;
 
+	void SetCanCastle(bool bCastle) { bCastling = bCastle; }
 	bool CanCastleRook();
 
 protected:
@@ -32,6 +33,7 @@ protected:
 	virtual void CalculateMove(bool bDrawRender) override;
 
 public:
+
 protected:
 
 	bool bFirstMove = true;
