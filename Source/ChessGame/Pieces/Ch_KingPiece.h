@@ -7,7 +7,7 @@
 #include "Ch_KingPiece.generated.h"
 
 /**
- * 
+ *
  */
 
 class AChessPieceCell;
@@ -15,34 +15,33 @@ class AChessPieceCell;
 UCLASS()
 class CHESSGAME_API ACh_KingPiece : public AChessPiece
 {
-	GENERATED_BODY()
-	
-public:
-
-	ACh_KingPiece();
-
-	virtual void Tick(float DeltaTime) override;
-	virtual void CheckSelectedCell(AChessBoardCell* selectedCell) override;
-	virtual void PieceUnselected() override;
-
-	//virtual TArray<AChessBoardCell*> CheckNextMove() override;
-
-protected:
-
-	virtual void BeginPlay() override;
-	virtual void MovePiece(AChessBoardCell* selectedCell) override;
-	virtual void CalculateMove(bool bDrawRender) override;
+    GENERATED_BODY()
 
 public:
 
-	bool bInCheck = false;
+    ACh_KingPiece();
+
+    virtual void Tick(float DeltaTime) override;
+    virtual void CheckSelectedCell(AChessBoardCell* selectedCell) override;
+    virtual void PieceUnselected() override;
+    TArray<AChessBoardCell*> CheckKingNextMove();
 
 protected:
 
-	bool bFirstMove = true;
+    virtual void BeginPlay() override;
+    virtual void MovePiece(AChessBoardCell* selectedCell) override;
+    virtual void CalculateMove(bool bDrawRender) override;
 
-	TArray<FIntVector2> m_KingMoves{{0,1},{1,0},{0,-1},{-1,0},{1,1},{-1,-1},{-1, 1},{1,-1}};
-	TArray<AChessBoardCell*> m_CastleCells;
+public:
+
+    bool bInCheck = false;
+
+protected:
+
+    bool bFirstMove = true;
+
+    TArray<FIntVector2> m_KingMoves{ {0,1},{1,0},{0,-1},{-1,0},{1,1},{-1,-1},{-1, 1},{1,-1} };
+    TArray<AChessBoardCell*> m_CastleCells;
 
 private:
 };

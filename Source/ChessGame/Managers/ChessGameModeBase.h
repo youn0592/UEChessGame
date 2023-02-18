@@ -41,7 +41,8 @@ public:
     void RemovePieceFromTeam(EPieceTeam team, AChessPiece* piece);
 
     TArray<AChessBoardCell*> GetTeamNextMove(EPieceTeam oppositeTeam);
-    void KingInCheck(EPieceTeam team);
+    void KingInCheck(EPieceTeam team, AChessPiece* checkingPiece);
+    void CheckForMate(EPieceTeam team);
 
     void PawnReachedEnd(ACh_PawnPiece* pawn);
     void TransformPawn(EPieceType pieceType);
@@ -55,6 +56,7 @@ public:
 
     ACh_KingPiece* whiteKingPiece;
     ACh_KingPiece* blackKingPiece;
+    AChessPiece* CheckingPiece;
 
     TArray<AChessPiece*> AliveWhiteTeam;
     TArray<AChessPiece*> DeadWhiteTeam;

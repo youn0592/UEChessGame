@@ -29,6 +29,7 @@ public:
 	void ShowPawnPopupWindow(bool bActive);
 	void SetCurrentTeam(EPieceTeam currentTeam);
 	void SetTeamInCheck(EPieceTeam currentTeam, bool bActive);
+	void SetCheckMate(EPieceTeam losingTeam);
 
 protected:
 

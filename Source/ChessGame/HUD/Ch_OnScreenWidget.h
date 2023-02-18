@@ -13,6 +13,7 @@
 class UTextBlock;
 class UCh_PawnPopupWidget;
 class UVerticalBox;
+class UCanvasPanel;
 class USlateBrushAsset;
 class UImage;
 
@@ -26,6 +27,7 @@ public:
 	void SetPopupWindow(bool bActive);
 	void SetCurrentTeam(FString name);
 	void SetTeamInCheck(FString name, bool bActive);
+	void SetCheckmatePanel(FString name);
 
 protected:
 
@@ -45,7 +47,13 @@ protected:
 		UTextBlock* TeamInCheck;
 
 	UPROPERTY(meta = (BindWidget))
-		UVerticalBox* CheckTextVBox;
+		UTextBlock* CheckmateTeam;
+
+	UPROPERTY(meta = (BindWidget))
+		UCanvasPanel* CheckTextVBox;	
+	
+	UPROPERTY(meta = (BindWidget))
+		UCanvasPanel* CheckmatePanel;
 
 	UPROPERTY(meta = (BindWidget))
 		UCh_PawnPopupWidget* PawnPopupWindow;

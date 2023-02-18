@@ -54,12 +54,12 @@ void ACh_KingPiece::PieceUnselected()
     Super::PieceUnselected();
 }
 
-//TArray<AChessBoardCell*> ACh_KingPiece::CheckNextMove()
-//{
-//    m_moveableCells.Empty();
-//    CalculateMove(false);
-//    return m_moveableCells;
-//}
+TArray<AChessBoardCell*> ACh_KingPiece::CheckKingNextMove()
+{
+    m_moveableCells.Empty();
+    CalculateMove(false);
+    return m_moveableCells;
+}
 
 void ACh_KingPiece::BeginPlay()
 {
@@ -77,7 +77,11 @@ void ACh_KingPiece::CalculateMove(bool bDrawRender)
     if (!bIsAlive) { return; }
     int loopIndex = m_KingMoves.Num();
     bool bSkipRun = false;
-    TArray<AChessBoardCell*> potentialDeathCells = m_Gamemode->GetTeamNextMove(m_OppositeTeam);
+    TArray<AChessBoardCell*> potentialDeathCells;
+    potentialDeathCells = m_Gamemode->GetTeamNextMove(m_OppositeTeam);
+
+
+
     AChessBoardCell* NewCell;
 
     for (int i = 0; i < loopIndex; i++)

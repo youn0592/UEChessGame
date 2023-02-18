@@ -33,6 +33,7 @@ protected:
     void HandleMouseWheel(const FInputActionValue& Instance);
     void HandleMousePosition(const FInputActionValue& Instance);
     void HandleADInput(const FInputActionValue& Instance);
+    void HandleEscapeInput(const FInputActionValue& Instance);
 
 public:
 
@@ -57,7 +58,10 @@ protected:
         UInputAction* MouseScrollWheel;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
-        UInputAction* ADKeyboardAction;
+        UInputAction* ADKeyboardAction;    
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Inputs")
+        UInputAction* EscapeKeyAction;
 
 private:
 

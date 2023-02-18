@@ -109,7 +109,7 @@ void ACh_RookPiece::CalculateMove(bool bDrawRender)
             {
                 if (bDrawRender == false && NewCell->IsKingOnCell())
                 {
-                    m_Gamemode->KingInCheck(m_OppositeTeam);
+                    m_Gamemode->KingInCheck(m_OppositeTeam, this);
                     m_moveableCells.Add(NewCell);
                     continue;
                 }

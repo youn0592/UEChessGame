@@ -88,3 +88,19 @@ void ACh_ChessHUD::SetTeamInCheck(EPieceTeam currentTeam, bool bActive)
     m_OnScreenWidget->SetTeamInCheck(currentTeamName, bActive);
 }
 
+void ACh_ChessHUD::SetCheckMate(EPieceTeam losingTeam)
+{
+    FString winningTeamName;
+    switch (losingTeam)
+    {
+    case EPieceTeam::White:
+        winningTeamName = "Black Team Wins";
+        break;
+    case EPieceTeam::Black:
+        winningTeamName = "White Team Wins";
+        break;
+    }
+
+    m_OnScreenWidget->SetCheckmatePanel(winningTeamName);
+}
+

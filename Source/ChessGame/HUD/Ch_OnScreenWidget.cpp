@@ -6,6 +6,7 @@
 #include <Components/TextBlock.h>
 #include <Components/VerticalBox.h>
 #include <Components/Image.h>
+#include <Components/CanvasPanel.h>
 
 void UCh_OnScreenWidget::NativeConstruct()
 {
@@ -15,6 +16,7 @@ void UCh_OnScreenWidget::NativeConstruct()
     PawnPopupWindow->SetVisibility(ESlateVisibility::Hidden);
 
     CheckTextVBox->SetVisibility(ESlateVisibility::Hidden);
+    CheckmatePanel->SetVisibility(ESlateVisibility::Hidden);
     IconImage->SetBrushFromAsset(UiImages[0]);
 }
 
@@ -63,5 +65,11 @@ void UCh_OnScreenWidget::SetTeamInCheck(FString name, bool bActive)
 
     TeamInCheck->SetText(FText::FromString(name));
     CheckTextVBox->SetVisibility(currentVisibilty);
+}
+
+void UCh_OnScreenWidget::SetCheckmatePanel(FString name)
+{
+    CheckmateTeam->SetText(FText::FromString(name));
+    CheckmatePanel->SetVisibility(ESlateVisibility::Visible);
 }
 

@@ -133,7 +133,7 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
     m_CurrentCell->GetIndex(m_xIndex, m_yIndex);
 
     PieceUnselected();
-    CalculateMove(false);
+    CheckNextMove();
 }
 
 bool AChessPiece::IsCellEmpty(int xIndex, int yIndex)

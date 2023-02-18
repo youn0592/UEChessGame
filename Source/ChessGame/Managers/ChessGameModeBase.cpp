@@ -98,7 +98,7 @@ bool AChessGameModeBase::IsKingStillInCheck(EPieceTeam team, AChessBoardCell* po
     {
     case EPieceTeam::White:
         moveableCells = GetTeamNextMove(EPieceTeam::Black);
-        
+
         for (auto cells : moveableCells)
         {
             if (cells == whiteKingPiece->GetCurrentCell() && pieceType != EPieceType::King)
@@ -107,7 +107,7 @@ bool AChessGameModeBase::IsKingStillInCheck(EPieceTeam team, AChessBoardCell* po
             }
         }
         m_ChessHUD->SetTeamInCheck(EPieceTeam::White, false);
-         return false;
+        return false;
         break;
 
     case EPieceTeam::Black:
@@ -166,19 +166,69 @@ TArray<AChessBoardCell*> AChessGameModeBase::GetTeamNextMove(EPieceTeam opposite
     return TArray<AChessBoardCell*>();
 }
 
-void AChessGameModeBase::KingInCheck(EPieceTeam team)
+void AChessGameModeBase::KingInCheck(EPieceTeam team, AChessPiece* checkingPiece)
 {
+    TArray<AChessBoardCell*> KingCells;
+    CheckingPiece = checkingPiece;
+    TArray<AChessBoardCell*> DeathCells;
     switch (team)
     {
     case EPieceTeam::White:
         bWhiteKingChecked = true;
         m_ChessHUD->SetTeamInCheck(EPieceTeam::White, bWhiteKingChecked);
+        KingCells = whiteKingPiece->CheckKingNextMove();
+        //DeathCells = GetTeamNextMove(EPieceTeam::Black);
+        if (KingCells.Num() <= 0)
+        {
+            CheckForMate(EPieceTeam::White);
+        }
+        CheckingPiece = nullptr;
         break;
     case EPieceTeam::Black:
         bBlackKingChecked = true;
         m_ChessHUD->SetTeamInCheck(EPieceTeam::Black, bBlackKingChecked);
+        KingCells = blackKingPiece->CheckKingNextMove();
+        if (KingCells.Num() <= 0)
+        {
+            CheckForMate(EPieceTeam::Black);
+        }
+        CheckingPiece = nullptr;
         break;
     }
+}
+
+void AChessGameModeBase::CheckForMate(EPieceTeam team)
+{
+    TArray<AChessBoardCell*> moveableCells;
+    TArray<AChessBoardCell*> killingCells;
+    AChessPiece* empty = GetWorld()->SpawnActor<AChessPiece>();
+    EPieceType checkingPieceType = CheckingPiece->GetPieceType();
+    bool bKingNotMated = false;
+
+    moveableCells = GetTeamNextMove(team);
+    killingCells = CheckingPiece->CheckNextMove();
+    for (auto moveCells : moveableCells)
+    {
+        if (moveCells->GetChessPieceOnCell() == nullptr)
+        {
+            moveCells->SetChessPieceOnCell(empty);
+        }
+        if (!IsKingStillInCheck(team, moveCells, checkingPieceType))
+        {
+            bKingNotMated = true;
+        }
+        if (moveCells->GetChessPieceOnCell() == empty)
+        {
+            moveCells->SetChessPieceOnCell(nullptr);
+        }
+        if (bKingNotMated == true)
+        {
+            return;
+        }
+    }
+    m_ChessHUD->SetCheckMate(team);
+    SetCurrentTeam(EPieceTeam::Empty);
+
 }
 
 void AChessGameModeBase::PawnReachedEnd(ACh_PawnPiece* pawn)

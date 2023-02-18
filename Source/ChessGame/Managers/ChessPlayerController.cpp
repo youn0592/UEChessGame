@@ -5,6 +5,7 @@
 #include "../Managers/ChessCamera.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 
 void AChessPlayerController::BeginPlay()
@@ -42,6 +43,7 @@ void AChessPlayerController::SetupInputComponent()
         Input->BindAction(MousePosAction, ETriggerEvent::None, this, &AChessPlayerController::HandleMousePosition);
         Input->BindAction(MouseScrollWheel, ETriggerEvent::Triggered, this, &AChessPlayerController::HandleMouseWheel);
         Input->BindAction(ADKeyboardAction, ETriggerEvent::Triggered, this, &AChessPlayerController::HandleADInput);
+        Input->BindAction(EscapeKeyAction, ETriggerEvent::Triggered, this, &AChessPlayerController::HandleEscapeInput);
     }
 
 
@@ -96,4 +98,12 @@ void AChessPlayerController::HandleMousePosition(const FInputActionValue& Instan
 void AChessPlayerController::HandleADInput(const FInputActionValue& Instance)
 {
 
+}
+
+void AChessPlayerController::HandleEscapeInput(const FInputActionValue& Instance)
+{
+    const bool EscapeClickValue = Instance.Get<bool>();
+
+    UE_LOG(LogTemp, Warning, TEXT("Escape Hit"));
+    UKismetSystemLibrary::QuitGame(GetWorld(), nullptr, EQuitPreference::Quit, false);
 }
