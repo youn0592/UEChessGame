@@ -45,10 +45,6 @@ TArray<AChessBoardCell*> ACh_PawnPiece::CheckNextMove()
 {
     m_moveableCells.Empty();
     CalculateKill(false);
-    if (m_Gamemode->IsKingCheckMated() == true)
-    {
-        CalculateMove(false);
-    }
     return m_moveableCells;
 }
 

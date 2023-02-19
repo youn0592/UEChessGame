@@ -49,9 +49,6 @@ void AChessGameModeBase::SetCurrentTeam(EPieceTeam team)
     case EPieceTeam::Black:
         m_CurrentTeam = EPieceTeam::White;
         break;
-    case EPieceTeam::Empty:
-        m_CurrentTeam = EPieceTeam::Empty;
-        break;
     default:
         break;
     }
@@ -208,7 +205,6 @@ void AChessGameModeBase::KingInCheck(EPieceTeam team, AChessPiece* checkingPiece
 
 void AChessGameModeBase::CheckForMate(EPieceTeam team)
 {
-    if (m_CurrentTeam == team) { return; }
     TArray<AChessBoardCell*> moveableCells;
     TArray<AChessBoardCell*> killingCells;
     AChessPiece* empty = GetWorld()->SpawnActor<AChessPiece>();
@@ -240,7 +236,6 @@ void AChessGameModeBase::CheckForMate(EPieceTeam team)
     }
     m_ChessHUD->SetCheckMate(team);
     SetCurrentTeam(EPieceTeam::Empty);
-    bPotCheckMate = false;
 
 }
 

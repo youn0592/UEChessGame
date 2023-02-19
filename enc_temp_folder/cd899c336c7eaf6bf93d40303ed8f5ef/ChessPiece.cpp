@@ -117,6 +117,10 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
 {
     if (m_Gamemode->GetCurrentTeam() != m_CurrentTeam) { return; }
     bMovePiece = true;
+    if (!bCastling)
+    {
+        m_Gamemode->SetCurrentTeam(m_CurrentTeam);
+    }
     newLocation = selectedCell->GetMiddleOfCell();
     StartPos = GetActorLocation();
     m_Distance = FVector::Distance(StartPos, newLocation);
@@ -130,10 +134,6 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
 
     PieceUnselected();
     CheckNextMove();
-    if (!bCastling || m_Gamemode->GetCurrentTeam() != EPieceTeam::Empty)
-    {
-        m_Gamemode->SetCurrentTeam(m_CurrentTeam);
-    }
 }
 
 bool AChessPiece::IsCellEmpty(int xIndex, int yIndex)

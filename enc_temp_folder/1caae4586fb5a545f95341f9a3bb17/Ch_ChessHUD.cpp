@@ -58,7 +58,6 @@ void ACh_ChessHUD::SetCurrentTeam(EPieceTeam currentTeam)
         break;
     case EPieceTeam::Black:
         currentTeamName = "Black";
-    case EPieceTeam::Empty:
         break;
     }
 
@@ -95,10 +94,10 @@ void ACh_ChessHUD::SetCheckMate(EPieceTeam losingTeam)
     switch (losingTeam)
     {
     case EPieceTeam::White:
-        winningTeamName = "BLACK TEAM WINS";
+        winningTeamName = "Black Team Wins";
         break;
     case EPieceTeam::Black:
-        winningTeamName = "WHITE TEAM WINS";
+        winningTeamName = "White Team Wins";
         break;
     }
 

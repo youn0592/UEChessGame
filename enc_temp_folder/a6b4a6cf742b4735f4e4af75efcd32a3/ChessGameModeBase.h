@@ -47,8 +47,6 @@ public:
     void PawnReachedEnd(ACh_PawnPiece* pawn);
     void TransformPawn(EPieceType pieceType);
 
-    bool IsKingCheckMated() { return bPotCheckMate; }
-
 protected:
 
     virtual void BeginPlay() override;
