@@ -107,7 +107,7 @@ void ACh_PawnPiece::CalculateKill(bool bDrawRender)
         {
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
 
-            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
+            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam && m_Gamemode->CheckingPiece != this)
             {
                 if (bDrawRender == false && NewCell->IsKingOnCell())
                 {

@@ -130,7 +130,8 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
 
     PieceUnselected();
     CheckNextMove();
-    if (!bCastling || m_Gamemode->GetCurrentTeam() != EPieceTeam::Empty)
+    if (m_Gamemode->GetCurrentTeam() == EPieceTeam::Empty) { return; }
+    if (!bCastling)
     {
         m_Gamemode->SetCurrentTeam(m_CurrentTeam);
     }
