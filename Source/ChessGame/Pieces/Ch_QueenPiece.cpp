@@ -60,9 +60,12 @@ void ACh_QueenPiece::CalculateMove(bool bDrawRender)
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
             if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
             {
-                if (bDrawRender == false && NewCell->IsKingOnCell() && m_Gamemode->CheckingPiece != this)
+                if (bDrawRender == false && NewCell->IsKingOnCell())
                 {
-                    m_Gamemode->KingInCheck(m_OppositeTeam, this);
+                    if (m_Gamemode->GetTeamInCheck(m_OppositeTeam) == false)
+                    {
+                        m_Gamemode->KingInCheck(m_OppositeTeam, this);
+                    }
                     m_moveableCells.Add(NewCell);
                     continue;
                 }
@@ -119,9 +122,12 @@ void ACh_QueenPiece::CalculateMove(bool bDrawRender)
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
             if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
             {
-                if (bDrawRender == false && NewCell->IsKingOnCell() && m_Gamemode->CheckingPiece != this)
+                if (bDrawRender == false && NewCell->IsKingOnCell())
                 {
-                    m_Gamemode->KingInCheck(m_OppositeTeam, this);
+                    if (m_Gamemode->GetTeamInCheck(m_OppositeTeam) == false)
+                    {
+                        m_Gamemode->KingInCheck(m_OppositeTeam, this);
+                    }
                     m_moveableCells.Add(NewCell);
                     continue;
                 }

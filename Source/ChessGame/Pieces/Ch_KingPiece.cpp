@@ -130,7 +130,8 @@ void ACh_KingPiece::CalculateMove(bool bDrawRender)
         for (int i = 0; i < 2; i++)
         {
             NewCell = m_gameBoard->GetCellAtIndex(m_xIndex, index);
-            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_CurrentTeam)
+            if (NewCell->GetChessPieceOnCell() == nullptr) { continue; }
+            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_CurrentTeam && NewCell->GetChessPieceOnCell()->GetPieceType() == EPieceType::Rook)
             {
                 ACh_RookPiece* CastleRook = Cast<ACh_RookPiece>(NewCell->GetChessPieceOnCell());
                 if (CastleRook->CanCastleRook())

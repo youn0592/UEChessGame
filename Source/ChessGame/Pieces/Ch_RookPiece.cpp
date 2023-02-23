@@ -44,7 +44,7 @@ bool ACh_RookPiece::CanCastleRook()
 
     int newY = m_yIndex;
     int nextY = 1;
-    for(int i =0; i < 7; i++)
+    for (int i = 0; i < 7; i++)
     {
         newY += nextY;
         if (m_gameBoard->GetCellAtIndex(m_xIndex, newY) && IsCellEmpty(m_xIndex, newY))
@@ -107,9 +107,12 @@ void ACh_RookPiece::CalculateMove(bool bDrawRender)
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
             if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
             {
-                if (bDrawRender == false && NewCell->IsKingOnCell() && m_Gamemode->CheckingPiece != this)
+                if (bDrawRender == false && NewCell->IsKingOnCell())
                 {
-                    m_Gamemode->KingInCheck(m_OppositeTeam, this);
+                    if (m_Gamemode->GetTeamInCheck(m_OppositeTeam) == false)
+                    {
+                        m_Gamemode->KingInCheck(m_OppositeTeam, this);
+                    }
                     m_moveableCells.Add(NewCell);
                     continue;
                 }

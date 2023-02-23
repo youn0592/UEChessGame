@@ -102,17 +102,25 @@ void ACh_PawnPiece::CalculateKill(bool bDrawRender)
     {
         newX += m_Direction;
         newY += nextIndex;
+        
+        if (m_gameBoard->GetCellAtIndex(newX, newY) && IsCellEmpty(newX, newY) && bDrawRender == false)
+        {
+            NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
+            m_moveableCells.Add(NewCell);
+        }
 
         if (m_gameBoard->GetCellAtIndex(newX, newY) && !IsCellEmpty(newX, newY))
         {
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);
 
-            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam && m_Gamemode->CheckingPiece != this)
+            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_OppositeTeam)
             {
                 if (bDrawRender == false && NewCell->IsKingOnCell())
                 {
-                    m_Gamemode->KingInCheck(m_OppositeTeam, this);
-                    m_moveableCells.Add(NewCell);
+                    if (m_Gamemode->GetTeamInCheck(m_OppositeTeam) == false)
+                    {
+                        m_Gamemode->KingInCheck(m_OppositeTeam, this);
+                    }
                 }
                 NewCell->SetSelectedMaterial(2, bDrawRender);
                 m_moveableCells.Add(NewCell);

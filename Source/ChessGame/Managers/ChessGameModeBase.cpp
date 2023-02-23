@@ -268,6 +268,7 @@ void AChessGameModeBase::TransformPawn(EPieceType pieceType)
             tempPiece->SetTeam(pawnTeam);
             tempPiece->SetActorLocation(pawnLoc);
             tempPiece->SetCurrentCell(newCell);
+            newCell->SetChessPieceOnCell(tempPiece);
             break;
         }
     }
@@ -276,9 +277,11 @@ void AChessGameModeBase::TransformPawn(EPieceType pieceType)
     {
     case EPieceTeam::White:
         AliveWhiteTeam.Add(tempPiece);
+        AliveWhiteTeam.Remove(m_EndedPawn);
         break;
     case EPieceTeam::Black:
         AliveBlackTeam.Add(tempPiece);
+        AliveBlackTeam.Remove(m_EndedPawn);
         break;
     }
     m_ChessHUD->ShowPawnPopupWindow(false);
