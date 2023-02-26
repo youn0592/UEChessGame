@@ -44,10 +44,13 @@ void ACh_PawnPiece::SetTeam(EPieceTeam team)
 TArray<AChessBoardCell*> ACh_PawnPiece::CheckNextMove()
 {
     m_moveableCells.Empty();
-    CalculateKill(false);
     if (m_Gamemode->IsKingCheckMated() == true)
     {
         CalculateMove(false);
+    }
+    else
+    {
+        CalculateKill(false);
     }
     return m_moveableCells;
 }
@@ -84,8 +87,10 @@ void ACh_PawnPiece::CalculateMove(bool bDrawRender)
         }
         break;
     }
-
-    CalculateKill(bDrawRender);
+    if (bDrawRender == true)
+    {
+        CalculateKill(bDrawRender);
+    }
 }
 
 void ACh_PawnPiece::CalculateKill(bool bDrawRender)
@@ -102,7 +107,7 @@ void ACh_PawnPiece::CalculateKill(bool bDrawRender)
     {
         newX += m_Direction;
         newY += nextIndex;
-        
+
         if (m_gameBoard->GetCellAtIndex(newX, newY) && IsCellEmpty(newX, newY) && bDrawRender == false)
         {
             NewCell = m_gameBoard->GetCellAtIndex(newX, newY);

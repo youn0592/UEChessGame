@@ -218,8 +218,10 @@ void AChessGameModeBase::CheckForMate(EPieceTeam team)
 
     moveableCells = GetTeamNextMove(team);
     killingCells = CheckingPiece->CheckNextMove();
+
     for (auto moveCells : moveableCells)
     {
+        UE_LOG(LogTemp, Warning, TEXT("hit, %i , %i"), moveCells->GetX(), moveCells->GetY());
         if (moveCells->GetChessPieceOnCell() == nullptr)
         {
             moveCells->SetChessPieceOnCell(empty);
