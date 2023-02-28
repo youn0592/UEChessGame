@@ -15,6 +15,7 @@ class UCh_PawnPopupWidget;
 class UVerticalBox;
 class UCanvasPanel;
 class USlateBrushAsset;
+class UButton;
 class UImage;
 
 UCLASS()
@@ -32,6 +33,9 @@ public:
 protected:
 
 	virtual void NativeConstruct() override;
+
+	UFUNCTION()
+	void ResetLevel();
 
 public:
 
@@ -54,6 +58,9 @@ protected:
 	
 	UPROPERTY(meta = (BindWidget))
 		UCanvasPanel* CheckmatePanel;
+
+	UPROPERTY(meta = (BindWidget))
+		UButton* ReloadSceneButton;
 
 	UPROPERTY(meta = (BindWidget))
 		UCh_PawnPopupWidget* PawnPopupWindow;

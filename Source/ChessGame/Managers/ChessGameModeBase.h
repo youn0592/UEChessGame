@@ -49,6 +49,8 @@ public:
 
     bool IsKingCheckMated() { return bPotCheckMate; }
 
+    void ResetGame();
+
 protected:
 
     virtual void BeginPlay() override;
@@ -73,7 +75,6 @@ protected:
     bool bWhiteKingChecked = false, bBlackKingChecked = false, bPotCheckMate = false;
     TArray<AChessBoardCell*> t_whiteNextMove;
     TArray<AChessBoardCell*> t_blackNextMove;
-
 
     ACh_PawnPiece* m_EndedPawn;
 

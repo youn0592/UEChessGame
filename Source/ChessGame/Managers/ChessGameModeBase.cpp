@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
+#include "Kismet/GameplayStatics.h"
 #include "../Managers/ChessGameModeBase.h"
 #include "../Pieces/ChessPiece.h"
 #include "../Pieces/Ch_PawnPiece.h"
@@ -290,6 +291,11 @@ void AChessGameModeBase::TransformPawn(EPieceType pieceType)
     m_EndedPawn->SetCurrentCell(nullptr);
     m_CurrentTeam = m_EndedPawn->GetOppositeTeam();
     m_EndedPawn = nullptr;
+}
+
+void AChessGameModeBase::ResetGame()
+{
+    UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName(), false));
 }
 
 void AChessGameModeBase::SetDeadPieceLocation(EPieceTeam team, FVector nextLoc)

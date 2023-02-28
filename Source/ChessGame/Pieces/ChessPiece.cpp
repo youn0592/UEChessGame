@@ -215,7 +215,7 @@ void AChessPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
             {
                 selectedCell->SetChessPieceOnCell(this);
                 m_CurrentCell->SetChessPieceOnCell(nullptr);
-                if (m_Gamemode->GetTeamInCheck(m_CurrentTeam) == true && m_Gamemode->IsKingStillInCheck(m_CurrentTeam, selectedCell, m_PieceType))
+                if (m_Gamemode->IsKingStillInCheck(m_CurrentTeam, selectedCell, m_PieceType))
                 {
                     selectedCell->SetChessPieceOnCell(nullptr);
                     m_CurrentCell->SetChessPieceOnCell(this);
@@ -228,8 +228,9 @@ void AChessPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
             {
                 AChessPiece* tempPiece = selectedCell->GetChessPieceOnCell();
                 m_CurrentCell->SetChessPieceOnCell(nullptr);
+                selectedCell->SetChessPieceOnCell(this);
                 tempPiece->bIsAlive = false;
-                if (m_Gamemode->GetTeamInCheck(m_CurrentTeam) == true && m_Gamemode->IsKingStillInCheck(m_CurrentTeam, selectedCell, m_PieceType))
+                if (m_Gamemode->IsKingStillInCheck(m_CurrentTeam, selectedCell, m_PieceType))
                 {
                     m_CurrentCell->SetChessPieceOnCell(this);
                     selectedCell->SetChessPieceOnCell(tempPiece);

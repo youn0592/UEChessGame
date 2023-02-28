@@ -3,10 +3,12 @@
 
 #include "../HUD/Ch_OnScreenWidget.h"
 #include "../HUD/Ch_PawnPopupWidget.h"
+#include "../Managers/ChessGameModeBase.h"
 #include <Components/TextBlock.h>
 #include <Components/VerticalBox.h>
 #include <Components/Image.h>
 #include <Components/CanvasPanel.h>
+#include <Components/Button.h>
 
 void UCh_OnScreenWidget::NativeConstruct()
 {
@@ -18,6 +20,20 @@ void UCh_OnScreenWidget::NativeConstruct()
     CheckTextVBox->SetVisibility(ESlateVisibility::Hidden);
     CheckmatePanel->SetVisibility(ESlateVisibility::Hidden);
     IconImage->SetBrushFromAsset(UiImages[0]);
+
+    ReloadSceneButton->OnClicked.AddUniqueDynamic(this, &UCh_OnScreenWidget::ResetLevel);
+}
+
+void UCh_OnScreenWidget::ResetLevel()
+{
+    AChessGameModeBase* GM = Cast<AChessGameModeBase>(GetWorld()->GetAuthGameMode());
+    if (GM == nullptr)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Gamemode was null in ResetLevel function in OnScreenWidget"));
+        return;
+    }
+
+    GM->ResetGame();
 }
 
 void UCh_OnScreenWidget::SetPopupWindow(bool bActive)

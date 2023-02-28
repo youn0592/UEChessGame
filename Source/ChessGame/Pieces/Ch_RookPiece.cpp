@@ -119,6 +119,10 @@ void ACh_RookPiece::CalculateMove(bool bDrawRender)
                 NewCell->SetSelectedMaterial(2, bDrawRender);
                 m_moveableCells.Add(NewCell);
             }
+            if (NewCell->GetChessPieceOnCell()->GetTeam() == m_CurrentTeam && bDrawRender == false)
+            {
+                m_moveableCells.Add(NewCell);
+            }
         }
 
         if (bIsPositve)
