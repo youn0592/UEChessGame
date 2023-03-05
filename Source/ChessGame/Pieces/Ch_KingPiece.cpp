@@ -50,6 +50,10 @@ void ACh_KingPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
 
 void ACh_KingPiece::PieceUnselected()
 {
+    for (auto castleCells : m_CastleCells)
+    {
+        castleCells->SetSelectedMaterial(0, true);
+    }
     m_CastleCells.Empty();
     Super::PieceUnselected();
 }
@@ -138,7 +142,6 @@ void ACh_KingPiece::CalculateMove(bool bDrawRender)
                 {
                     NewCell->SetSelectedMaterial(3, bDrawRender);
                     m_CastleCells.Add(NewCell);
-                    break;
                 }
                 index = 7;
                 continue;

@@ -3,7 +3,6 @@
 
 #include "../Board/ChessBoard.h"
 #include "../Board/ChessBoardCell.h"
-#include "../Managers/ChessGameStateBase.h"
 #include "../Managers/ChessGameModeBase.h"
 #include "../Pieces/ChessPiece.h"
 #include "../Pieces/Ch_KingPiece.h"
