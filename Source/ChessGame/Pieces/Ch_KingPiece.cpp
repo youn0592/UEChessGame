@@ -85,7 +85,6 @@ void ACh_KingPiece::CalculateMove(bool bDrawRender)
     potentialDeathCells = m_Gamemode->GetTeamNextMove(m_OppositeTeam);
 
 
-
     AChessBoardCell* NewCell;
 
     for (int i = 0; i < loopIndex; i++)

@@ -74,6 +74,9 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Mesh")
         TArray<UMaterial*> m_PieceMaterials;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Audio")
+        UAudioComponent* m_MoveSound;
+
     UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Properties")
         float MovementSpeed = 2.0f;
 

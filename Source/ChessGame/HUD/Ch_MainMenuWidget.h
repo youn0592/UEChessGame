@@ -26,11 +26,17 @@ public:
 	UFUNCTION()
 	void QuitGame();
 
+	UFUNCTION()
+		void BackSelected();
+
 protected:
 	virtual void NativeConstruct() override;
 
 public:
 protected:
+
+	UPROPERTY(meta = (BindWidget))
+		UPanelWidget* MainMenuPanel;
 
 	UPROPERTY(meta = (BindWidget))
 		UButton* PlayButton;
@@ -40,6 +46,13 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 		UButton* QuitButton;
+
+	UPROPERTY(meta = (BindWidget))
+		UPanelWidget* CreditsPanel;
+
+	UPROPERTY(meta = (BindWidget))
+		UButton* BackButton;
+
 
 private:
 

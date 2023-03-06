@@ -262,6 +262,19 @@ void AChessGameModeBase::TransformPawn(EPieceType pieceType)
     FVector pawnLoc = m_EndedPawn->GetActorLocation();
     EPieceTeam pawnTeam = m_EndedPawn->GetTeam();
     AChessPiece* tempPiece;
+
+    switch (pawnTeam)
+    {
+    case EPieceTeam::White:
+        AliveWhiteTeam.Add(tempPiece);
+        AliveWhiteTeam.Remove(m_EndedPawn);
+        break;
+    case EPieceTeam::Black:
+        AliveBlackTeam.Add(tempPiece);
+        AliveBlackTeam.Remove(m_EndedPawn);
+        break;
+    }    
+
     for (auto pieces : ExtraPieces)
     {
         if (pieces->GetPieceType() == pieceType)
@@ -276,17 +289,6 @@ void AChessGameModeBase::TransformPawn(EPieceType pieceType)
         }
     }
     m_EndedPawn->SetActorLocation(hellLoc);
-    switch (pawnTeam)
-    {
-    case EPieceTeam::White:
-        AliveWhiteTeam.Add(tempPiece);
-        AliveWhiteTeam.Remove(m_EndedPawn);
-        break;
-    case EPieceTeam::Black:
-        AliveBlackTeam.Add(tempPiece);
-        AliveBlackTeam.Remove(m_EndedPawn);
-        break;
-    }
     m_ChessHUD->ShowPawnPopupWindow(false);
     m_EndedPawn->SetCurrentCell(nullptr);
     m_CurrentTeam = m_EndedPawn->GetOppositeTeam();

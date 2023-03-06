@@ -15,9 +15,12 @@ void UCh_MainMenuWidget::NativeConstruct()
         UE_LOG(LogTemp, Error, TEXT("Gamemode was null in MainMenuWidget"));
     }
 
+    CreditsPanel->SetVisibility(ESlateVisibility::Hidden);
+
     PlayButton->OnClicked.AddUniqueDynamic(this, &UCh_MainMenuWidget::PlayGame);
     CreditButton->OnClicked.AddUniqueDynamic(this, &UCh_MainMenuWidget::CreditSelected);
     QuitButton->OnClicked.AddUniqueDynamic(this, &UCh_MainMenuWidget::QuitGame);
+    BackButton->OnClicked.AddUniqueDynamic(this, &UCh_MainMenuWidget::BackSelected);
 }
 
 void UCh_MainMenuWidget::PlayGame()
@@ -27,10 +30,17 @@ void UCh_MainMenuWidget::PlayGame()
 
 void UCh_MainMenuWidget::CreditSelected()
 {
-    return;
+    MainMenuPanel->SetVisibility(ESlateVisibility::Hidden);
+    CreditsPanel->SetVisibility(ESlateVisibility::Visible);
 }
 
 void UCh_MainMenuWidget::QuitGame()
 {
     m_Gamemode->QuitGame();
+}
+
+void UCh_MainMenuWidget::BackSelected()
+{
+    MainMenuPanel->SetVisibility(ESlateVisibility::Visible);
+    CreditsPanel->SetVisibility(ESlateVisibility::Hidden);
 }

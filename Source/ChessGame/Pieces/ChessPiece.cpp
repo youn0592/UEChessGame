@@ -3,6 +3,7 @@
 
 #include "../Pieces/ChessPiece.h"
 #include "Components/BoxComponent.h"
+#include "Components/AudioComponent.h"
 #include "../Managers/ChessGameModeBase.h"
 #include "../Board/ChessBoard.h"
 #include "../Board/ChessBoardCell.h"
@@ -21,6 +22,11 @@ AChessPiece::AChessPiece()
 
     m_BoxCollision = CreateDefaultSubobject<UBoxComponent>("PieceCollision");
     m_BoxCollision->SetupAttachment(RootComponent);
+
+    m_MoveSound = CreateDefaultSubobject<UAudioComponent>("MoveSounds");
+    m_MoveSound->bAutoActivate = false;
+    m_MoveSound->Stop();
+    m_MoveSound->SetupAttachment(RootComponent);
 
     Tags.Add("ChessPiece");
 }
@@ -46,6 +52,7 @@ void AChessPiece::BeginPlay()
 
     m_gameBoard->GetBoardSize(m_boardSizeX, m_boardSizeY);
     bIsAlive = true;
+
 }
 
 // Called every frame
@@ -127,6 +134,9 @@ void AChessPiece::MovePiece(AChessBoardCell* selectedCell)
     m_CurrentCell->SetChessPieceOnCell(this);
 
     m_CurrentCell->GetIndex(m_xIndex, m_yIndex);
+
+    m_MoveSound->ResetParameters();
+    m_MoveSound->Play();
 
     PieceUnselected();
     CheckNextMove();
