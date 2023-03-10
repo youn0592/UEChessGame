@@ -12,15 +12,15 @@ HOW TO PLAY:
 * Pressing ESC will automatically close the game.
 * When trying to Castle with the King and Rook, make sure you select the King, and press the Yellow Cell bellow the Rook, clicking on the rook when trying to castle will cancel the castle and make the player select the Rook instead.
 
-CREITS:
-Creator and Gameplay Programmer - Christian Young
-Chess Piece and Board 3D Modeller - Patrick McComber
+CREDITS:
+* Creator and Gameplay Programmer - Christian Young
+* Chess Piece and Board 3D Modeller - Patrick McComber
 
-Smooth-Lovin Kevin MacLeod (incompetech.com)
+* Smooth-Lovin Kevin MacLeod (incompetech.com)
 Licensed under Creative Commons: By Attribution 3.0
 http://creativecommons.org/licenses/by/3.0/
 
-Airport Lounge Kevin MacLeod (incompetech.com)
+* Airport Lounge Kevin MacLeod (incompetech.com)
 Licensed under Creative Commons: By Attribution 3.0
 http://creativecommons.org/licenses/by/3.0/
 
