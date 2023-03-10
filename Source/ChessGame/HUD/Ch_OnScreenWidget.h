@@ -37,6 +37,11 @@ protected:
 	UFUNCTION()
 	void ResetLevel();
 
+	UFUNCTION()
+		void ReturnToMenu();
+	UFUNCTION()
+		void QuitGame();
+
 public:
 
 protected:
@@ -61,6 +66,12 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 		UButton* ReloadSceneButton;
+
+	UPROPERTY(meta = (BindWidget))
+		UButton* ReturnToMenuButton;
+
+	UPROPERTY(meta = (BindWidget))
+		UButton* QuitGameButton;
 
 	UPROPERTY(meta = (BindWidget))
 		UCh_PawnPopupWidget* PawnPopupWindow;

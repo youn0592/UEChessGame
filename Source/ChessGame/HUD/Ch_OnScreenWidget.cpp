@@ -22,6 +22,9 @@ void UCh_OnScreenWidget::NativeConstruct()
     IconImage->SetBrushFromAsset(UiImages[0]);
 
     ReloadSceneButton->OnClicked.AddUniqueDynamic(this, &UCh_OnScreenWidget::ResetLevel);
+    ReturnToMenuButton->OnClicked.AddUniqueDynamic(this, &UCh_OnScreenWidget::ReturnToMenu);
+    QuitGameButton->OnClicked.AddUniqueDynamic(this, &UCh_OnScreenWidget::QuitGame);
+
 }
 
 void UCh_OnScreenWidget::ResetLevel()
@@ -34,6 +37,30 @@ void UCh_OnScreenWidget::ResetLevel()
     }
 
     GM->ResetGame();
+}
+
+void UCh_OnScreenWidget::ReturnToMenu()
+{
+    AChessGameModeBase* GM = Cast<AChessGameModeBase>(GetWorld()->GetAuthGameMode());
+    if (GM == nullptr)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Gamemode was null in ResetLevel function in OnScreenWidget"));
+        return;
+    }
+
+    GM->ReturnToMainMenu();
+}
+
+void UCh_OnScreenWidget::QuitGame()
+{
+    AChessGameModeBase* GM = Cast<AChessGameModeBase>(GetWorld()->GetAuthGameMode());
+    if (GM == nullptr)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Gamemode was null in ResetLevel function in OnScreenWidget"));
+        return;
+    }
+
+    GM->QuitGame();
 }
 
 void UCh_OnScreenWidget::SetPopupWindow(bool bActive)

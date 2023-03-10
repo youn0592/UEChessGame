@@ -50,6 +50,8 @@ public:
     bool IsKingCheckMated() { return bPotCheckMate; }
 
     void ResetGame();
+    void QuitGame();
+    void ReturnToMainMenu();
 
 protected:
 

@@ -274,6 +274,7 @@ void AChessGameModeBase::TransformPawn(EPieceType pieceType)
             tempPiece->SetCurrentCell(newCell);
             tempPiece->bIsAlive = true;
             newCell->SetChessPieceOnCell(tempPiece);
+            ExtraPieces.Remove(tempPiece);
             break;
         }
 
@@ -300,6 +301,16 @@ void AChessGameModeBase::TransformPawn(EPieceType pieceType)
 void AChessGameModeBase::ResetGame()
 {
     UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName(), false));
+}
+
+void AChessGameModeBase::QuitGame()
+{
+    UKismetSystemLibrary::QuitGame(GetWorld(), nullptr, EQuitPreference::Quit, false);
+}
+
+void AChessGameModeBase::ReturnToMainMenu()
+{
+    UGameplayStatics::OpenLevel(this, FName("MainMenuScene"), false);
 }
 
 void AChessGameModeBase::SetDeadPieceLocation(EPieceTeam team, FVector nextLoc)
