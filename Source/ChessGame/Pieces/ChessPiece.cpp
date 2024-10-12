@@ -225,7 +225,7 @@ void AChessPiece::CheckSelectedCell(AChessBoardCell* selectedCell)
             {
                 selectedCell->SetChessPieceOnCell(this);
                 m_CurrentCell->SetChessPieceOnCell(nullptr);
-                if (m_Gamemode->IsKingStillInCheck(m_CurrentTeam, selectedCell, m_PieceType))
+                if (m_Gamemode->IsKingStillInCheck(m_CurrentTeam, selectedCell, m_PieceType) && !bCastling)
                 {
                     selectedCell->SetChessPieceOnCell(nullptr);
                     m_CurrentCell->SetChessPieceOnCell(this);
