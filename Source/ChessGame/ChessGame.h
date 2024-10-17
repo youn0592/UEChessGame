@@ -23,3 +23,12 @@ enum EPieceType
     Queen,
     King
 };
+
+UENUM()
+enum class EOnlinePresence
+{
+    Offline,
+    Online,
+    Busy,
+    Away
+};

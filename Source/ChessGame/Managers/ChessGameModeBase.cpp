@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Kismet/GameplayStatics.h"
 #include "../Managers/ChessGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 #include "../Pieces/ChessPiece.h"
 #include "../Pieces/Ch_PawnPiece.h"
 #include "../Pieces/Ch_KingPiece.h"
@@ -18,9 +18,12 @@ AChessGameModeBase::AChessGameModeBase()
 void AChessGameModeBase::BeginPlay()
 {
     Super::BeginPlay();
+
+    //Sets the starting location of White and Black Pieces.
     m_whiteDeadPieceLoc = FVector(50, -74, 0);
     m_blackDeadPieceLoc = FVector(300, 420, 0);
     m_CurrentTeam = EPieceTeam::White;
+
 
     m_ChessHUD = Cast<ACh_ChessHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
     if (m_ChessHUD == nullptr)

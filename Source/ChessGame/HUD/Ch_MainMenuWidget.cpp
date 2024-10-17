@@ -17,12 +17,20 @@ void UCh_MainMenuWidget::NativeConstruct()
 
     CreditsPanel->SetVisibility(ESlateVisibility::Hidden);
 
+    PlayOnlineButton->OnClicked.AddUniqueDynamic(this, &UCh_MainMenuWidget::PlayOnlineGame);
     PlayButton->OnClicked.AddUniqueDynamic(this, &UCh_MainMenuWidget::PlayGame);
     CreditButton->OnClicked.AddUniqueDynamic(this, &UCh_MainMenuWidget::CreditSelected);
     QuitButton->OnClicked.AddUniqueDynamic(this, &UCh_MainMenuWidget::QuitGame);
     BackButton->OnClicked.AddUniqueDynamic(this, &UCh_MainMenuWidget::BackSelected);
 }
 
+void UCh_MainMenuWidget::PlayOnlineGame()
+{
+    //TODO - Setup the ability to open a Lobby which allows the player to invite friends from friends list and choose which colour to start as.
+    m_Gamemode->PlayGame();
+}
+
+//Function for playing Local game
 void UCh_MainMenuWidget::PlayGame()
 {
     m_Gamemode->PlayGame();

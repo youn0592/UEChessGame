@@ -20,6 +20,8 @@ class CHESSGAME_API UCh_MainMenuWidget : public UUserWidget
 public:
 
 	UFUNCTION()
+	void PlayOnlineGame();
+	UFUNCTION()
 	void PlayGame();
 	UFUNCTION()
 	void CreditSelected();
@@ -37,7 +39,10 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 		UPanelWidget* MainMenuPanel;
+		UPROPERTY(meta = (BindWidget))
+		UButton* PlayOnlineButton;
 
+		//Button for playing a local game.
 	UPROPERTY(meta = (BindWidget))
 		UButton* PlayButton;
 
